@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
 
 from app.core.database import Base, engine
 from app.routers import auth, assets, asset_fields, licenses, users, roles, stocktakes, dashboard, categories, maintenance
@@ -35,3 +36,14 @@ app.include_router(categories.router)
 @app.on_event("startup")
 def on_startup():
     Base.metadata.create_all(bind=engine)
+    with engine.begin() as connection:
+        result = connection.execute(
+            text(
+                "SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS "
+                "WHERE TABLE_SCHEMA = DATABASE() "
+                "AND TABLE_NAME = 'assets' "
+                "AND COLUMN_NAME = 'category_id'"
+            )
+        )
+        if result.scalar() == 0:
+            connection.execute(text("ALTER TABLE assets ADD COLUMN category_id INT NULL"))

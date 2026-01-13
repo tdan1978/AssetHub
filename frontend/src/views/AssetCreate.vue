@@ -1,0 +1,147 @@
+<template>
+  <div class="space-y-6">
+    <div class="card">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-base font-semibold">新增资产</h2>
+          <p class="text-sm text-muted-foreground">填写基础信息与自定义字段。</p>
+        </div>
+        <RouterLink to="/assets">
+          <Button variant="outline">返回列表</Button>
+        </RouterLink>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="grid gap-3 md:grid-cols-4">
+        <Input v-model="form.sn" placeholder="SN" />
+        <Input v-model="form.asset_no" placeholder="编号(可选)" />
+        <Input v-model="form.name" placeholder="名称" />
+        <Select v-model="form.category_id" @update:modelValue="onCategoryChange">
+          <SelectTrigger>
+            <SelectValue placeholder="选择类型" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem v-for="item in categories" :key="item.id" :value="item.id">
+              {{ item.name }}
+            </SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div v-if="fields.length" class="mt-4 grid gap-3 md:grid-cols-2">
+        <div v-for="field in fields" :key="field.id" class="space-y-1">
+          <label class="text-xs text-muted-foreground">
+            {{ field.name }} <span v-if="field.is_required">*</span>
+          </label>
+          <Input v-if="field.field_type === 'text'" v-model="fieldValues[field.id]" />
+          <Textarea v-else-if="field.field_type === 'textarea'" v-model="fieldValues[field.id]" />
+          <Input v-else-if="field.field_type === 'number'" v-model="fieldValues[field.id]" type="number" />
+          <DatePicker v-else-if="field.field_type === 'date'" v-model="fieldValues[field.id]" :showMonthYearSelect="true" />
+          <Select v-else-if="field.field_type === 'single_select'" v-model="fieldValues[field.id]">
+            <SelectTrigger>
+              <SelectValue placeholder="选择" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem v-for="opt in field.options || []" :key="opt" :value="opt">
+                {{ opt }}
+              </SelectItem>
+            </SelectContent>
+          </Select>
+          <div v-else-if="field.field_type === 'multi_select'" class="grid gap-2">
+            <label v-for="opt in field.options || []" :key="opt" class="flex items-center gap-2 text-sm">
+              <Checkbox
+                :modelValue="fieldValues[field.id]?.includes(opt)"
+                @update:modelValue="(checked) => toggleMultiSelect(field.id, opt, checked)"
+              />
+              <span>{{ opt }}</span>
+            </label>
+          </div>
+          <div v-else-if="field.field_type === 'boolean'" class="flex items-center gap-2 text-sm">
+            <Switch v-model="fieldValues[field.id]" class="mt-2" />
+            <span class="mt-2">是否</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <Button @click="save">保存</Button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
+import api from "../api/client";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Textarea } from "../components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
+import { Checkbox } from "../components/ui/checkbox";
+import { Switch } from "../components/ui/switch";
+import { DatePicker } from "../components/ui/date-picker";
+
+const router = useRouter();
+const categories = ref([]);
+const fields = ref([]);
+const fieldValues = ref({});
+const form = ref({
+  sn: "",
+  asset_no: "",
+  name: "",
+  category: "",
+  category_id: null,
+  status: 0
+});
+
+const loadCategories = async () => {
+  const { data } = await api.get("/categories");
+  categories.value = data;
+};
+
+const onCategoryChange = async () => {
+  fields.value = [];
+  fieldValues.value = {};
+  const categoryId = Number(form.value.category_id);
+  form.value.category_id = Number.isNaN(categoryId) ? null : categoryId;
+  const category = categories.value.find((item) => item.id === form.value.category_id);
+  form.value.category = category?.name || "";
+  if (!form.value.category_id) return;
+  const { data } = await api.get(`/categories/${form.value.category_id}/fields`);
+  fields.value = data;
+  for (const field of fields.value) {
+    if (field.field_type === "multi_select") {
+      fieldValues.value[field.id] = [];
+    } else if (field.field_type === "boolean") {
+      fieldValues.value[field.id] = false;
+    } else {
+      fieldValues.value[field.id] = "";
+    }
+  }
+};
+
+const toggleMultiSelect = (fieldId, option, checked) => {
+  const current = Array.isArray(fieldValues.value[fieldId]) ? fieldValues.value[fieldId] : [];
+  if (checked) {
+    fieldValues.value[fieldId] = current.includes(option) ? current : [...current, option];
+  } else {
+    fieldValues.value[fieldId] = current.filter((item) => item !== option);
+  }
+};
+
+const save = async () => {
+  const { data } = await api.post("/assets", form.value);
+  if (fields.value.length) {
+    const payload = fields.value.map((field) => ({
+      field_id: field.id,
+      value: fieldValues.value[field.id]
+    }));
+    await api.put(`/assets/${data.id}/fields`, payload);
+  }
+  router.push("/assets");
+};
+
+onMounted(loadCategories);
+</script>

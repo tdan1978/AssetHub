@@ -9,16 +9,16 @@
       <div class="card">
         <h3 class="text-sm font-semibold">安全与登录</h3>
         <div class="mt-3 grid gap-2">
-          <input class="input" placeholder="JWT 过期(小时)" value="24" />
-          <input class="input" placeholder="登录限流阈值" value="10" />
+          <Input placeholder="JWT 过期(小时)" value="24" />
+          <Input placeholder="登录限流阈值" value="10" />
           <Button variant="outline">保存</Button>
         </div>
       </div>
       <div class="card">
         <h3 class="text-sm font-semibold">备份策略</h3>
         <div class="mt-3 grid gap-2">
-          <input class="input" placeholder="备份时间" value="03:00" />
-          <input class="input" placeholder="保留天数" value="30" />
+          <Input placeholder="备份时间" value="03:00" />
+          <Input placeholder="保留天数" value="30" />
           <Button variant="outline">立即备份</Button>
         </div>
       </div>
@@ -26,7 +26,7 @@
 
     <div class="card">
       <h3 class="text-sm font-semibold">系统公告</h3>
-      <textarea class="textarea" placeholder="维护通知或使用说明"></textarea>
+      <Textarea placeholder="维护通知或使用说明"></Textarea>
       <div class="mt-3">
         <Button variant="outline">发布公告</Button>
       </div>
@@ -36,6 +36,8 @@
 
 <script setup>
 import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Textarea } from "../components/ui/textarea";
 </script>
 
 <style scoped></style>

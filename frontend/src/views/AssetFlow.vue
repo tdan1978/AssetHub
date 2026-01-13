@@ -9,9 +9,9 @@
       <div class="card">
         <h3 class="text-sm font-semibold">领用</h3>
         <div class="mt-3 grid gap-2">
-          <input v-model="checkout.asset" class="input" placeholder="资产 ID / SN" />
-          <input v-model="checkout.user_id" class="input" placeholder="领用人 ID" />
-          <input v-model="checkout.dept" class="input" placeholder="部门" />
+          <Input v-model="checkout.asset" placeholder="资产 ID / SN" />
+          <Input v-model="checkout.user_id" placeholder="领用人 ID" />
+          <Input v-model="checkout.dept" placeholder="部门" />
           <Button @click="submitCheckout">提交领用</Button>
         </div>
       </div>
@@ -19,11 +19,16 @@
       <div class="card">
         <h3 class="text-sm font-semibold">退库</h3>
         <div class="mt-3 grid gap-2">
-          <input v-model="checkin.asset" class="input" placeholder="资产 ID / SN" />
-          <select v-model="checkin.damaged" class="input">
-            <option :value="false">设备状况：完好</option>
-            <option :value="true">设备状况：损坏</option>
-          </select>
+          <Input v-model="checkin.asset" placeholder="资产 ID / SN" />
+          <Select v-model="checkin.damaged">
+            <SelectTrigger>
+              <SelectValue placeholder="设备状况" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="false">设备状况：完好</SelectItem>
+              <SelectItem value="true">设备状况：损坏</SelectItem>
+            </SelectContent>
+          </Select>
           <Button @click="submitCheckin">提交退库</Button>
         </div>
       </div>
@@ -31,8 +36,8 @@
       <div class="card">
         <h3 class="text-sm font-semibold">调拨</h3>
         <div class="mt-3 grid gap-2">
-          <input v-model="transfer.asset" class="input" placeholder="资产 ID / SN" />
-          <input v-model="transfer.dept" class="input" placeholder="目标部门" />
+          <Input v-model="transfer.asset" placeholder="资产 ID / SN" />
+          <Input v-model="transfer.dept" placeholder="目标部门" />
           <Button @click="submitTransfer">提交调拨</Button>
         </div>
       </div>
@@ -47,12 +52,14 @@
 
 <script setup>
 import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import { ref } from "vue";
 import api from "../api/client";
 
 const message = ref("");
 const checkout = ref({ asset: "", user_id: "", dept: "" });
-const checkin = ref({ asset: "", damaged: false });
+const checkin = ref({ asset: "", damaged: "false" });
 const transfer = ref({ asset: "", dept: "" });
 
 const resolveAssetId = async (input) => {
@@ -89,7 +96,7 @@ const submitCheckin = async () => {
       return;
     }
     await api.post(`/assets/${assetId}/checkin`, null, {
-      params: { damaged: checkin.value.damaged }
+      params: { damaged: checkin.value.damaged === "true" }
     });
     message.value = "退库成功";
   } catch (err) {

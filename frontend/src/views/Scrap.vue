@@ -8,8 +8,8 @@
     <div class="card">
       <h3 class="text-sm font-semibold">发起报废申请</h3>
       <div class="mt-3 grid gap-2 md:grid-cols-3">
-        <input class="input" placeholder="资产 ID / SN" />
-        <input class="input" placeholder="报废原因" />
+        <Input placeholder="资产 ID / SN" />
+        <Input placeholder="报废原因" />
         <div class="flex items-center">
           <Button>提交申请</Button>
         </div>
@@ -46,6 +46,7 @@
 
 <script setup>
 import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
 </script>
 
 <style scoped></style>

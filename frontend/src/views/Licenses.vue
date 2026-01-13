@@ -1,31 +1,20 @@
 <template>
   <div class="space-y-6">
     <div class="rounded-lg border bg-background p-4">
-      <Button @click="showCreate = !showCreate">
-        {{ showCreate ? "收起新增" : "新增授权" }}
-      </Button>
-    </div>
-
-    <div v-if="showCreate" class="rounded-lg border bg-background p-4">
-      <h2 class="mb-4 text-base font-semibold">新增授权</h2>
-      <div class="grid gap-3 md:grid-cols-2">
-        <input v-model="form.name" class="input" placeholder="软件名称" />
-        <input v-model="form.total_qty" class="input" type="number" min="1" placeholder="总数" />
-        <textarea v-model="form.license_key" class="input min-h-[80px] md:col-span-2" placeholder="授权密钥"></textarea>
-      </div>
-      <div class="mt-4">
-        <Button @click="create">保存</Button>
-      </div>
+      <RouterLink to="/licenses/new">
+        <Button variant="outline">新增授权</Button>
+      </RouterLink>
     </div>
 
     <div class="rounded-lg border bg-background">
-      <table class="w-full text-sm">
-        <thead class="border-b bg-muted/40 text-left">
+      <table class="table">
+        <thead>
           <tr>
             <th class="px-4 py-2">软件</th>
             <th class="px-4 py-2">总数</th>
             <th class="px-4 py-2">已分配</th>
             <th class="px-4 py-2">到期</th>
+            <th class="px-4 py-2">操作</th>
           </tr>
         </thead>
         <tbody>
@@ -34,10 +23,31 @@
             <td class="px-4 py-2">{{ item.total_qty }}</td>
             <td class="px-4 py-2">{{ item.used_qty }}</td>
             <td class="px-4 py-2">{{ item.expire_at }}</td>
+            <td class="px-4 py-2">
+              <div class="flex gap-2">
+                <RouterLink :to="`/licenses/${item.id}/edit`">
+                  <Button size="sm" variant="outline">编辑</Button>
+                </RouterLink>
+                <Button size="sm" variant="outline" @click="askDelete(item.id)">删除</Button>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
+
+    <AlertDialog v-model:open="confirmOpen">
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>确认删除</AlertDialogTitle>
+          <AlertDialogDescription>删除后将无法恢复。</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>取消</AlertDialogCancel>
+          <AlertDialogAction @click="confirmDelete">删除</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   </div>
 </template>
 
@@ -45,20 +55,36 @@
 import { onMounted, ref } from "vue";
 import api from "../api/client";
 import { Button } from "../components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter
+} from "../components/ui/alert-dialog";
 
 const items = ref([]);
-const showCreate = ref(false);
-const form = ref({ name: "", license_key: "", total_qty: 1, used_qty: 0 });
+const confirmOpen = ref(false);
+const pendingId = ref(null);
 
 const load = async () => {
   const { data } = await api.get("/licenses", { params: { page: 1, size: 20 } });
   items.value = data.items;
 };
 
-const create = async () => {
-  await api.post("/licenses", form.value);
-  form.value = { name: "", license_key: "", total_qty: 1, used_qty: 0 };
-  showCreate.value = false;
+const askDelete = (id) => {
+  pendingId.value = id;
+  confirmOpen.value = true;
+};
+
+const confirmDelete = async () => {
+  if (!pendingId.value) return;
+  await api.delete(`/licenses/${pendingId.value}`);
+  confirmOpen.value = false;
+  pendingId.value = null;
   await load();
 };
 

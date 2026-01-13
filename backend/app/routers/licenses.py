@@ -18,6 +18,14 @@ def list_licenses(page: int = 1, size: int = 20, db: Session = Depends(get_db), 
     return Page(total=total, items=items)
 
 
+@router.get("/{license_id}", response_model=LicenseOut)
+def get_license(license_id: int, db: Session = Depends(get_db), _: object = Depends(get_current_user)):
+    item = db.query(License).filter(License.id == license_id).first()
+    if not item:
+        raise HTTPException(status_code=404, detail="License not found")
+    return item
+
+
 @router.post("", response_model=LicenseOut)
 def create_license(
     payload: LicenseCreate,

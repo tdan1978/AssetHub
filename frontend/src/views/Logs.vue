@@ -4,16 +4,21 @@
       <h2 class="text-base font-semibold">操作审计日志</h2>
       <p class="mt-1 text-sm text-muted-foreground">记录资产字段变更与关键操作。</p>
       <div class="mt-4 grid gap-3 md:grid-cols-4">
-        <input class="input" placeholder="操作人" />
-        <input class="input" placeholder="资产 ID / SN" />
-        <select class="input">
-          <option>全部动作</option>
-          <option>IN</option>
-          <option>OUT</option>
-          <option>TRANSFER</option>
-          <option>REPAIR</option>
-          <option>DISCARD</option>
-        </select>
+        <Input placeholder="操作人" />
+        <Input placeholder="资产 ID / SN" />
+        <Select v-model="action">
+          <SelectTrigger>
+            <SelectValue placeholder="全部动作" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">全部动作</SelectItem>
+            <SelectItem value="IN">IN</SelectItem>
+            <SelectItem value="OUT">OUT</SelectItem>
+            <SelectItem value="TRANSFER">TRANSFER</SelectItem>
+            <SelectItem value="REPAIR">REPAIR</SelectItem>
+            <SelectItem value="DISCARD">DISCARD</SelectItem>
+          </SelectContent>
+        </Select>
         <Button>查询</Button>
       </div>
     </div>
@@ -44,7 +49,12 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
 import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
+
+const action = ref("all");
 </script>
 
 <style scoped></style>

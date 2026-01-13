@@ -3,9 +3,12 @@
     <div class="w-full max-w-sm rounded-lg border bg-background p-6 shadow-sm">
       <h2 class="mb-4 text-lg font-semibold">登录系统</h2>
       <div class="space-y-3">
-        <input v-model="username" class="input" placeholder="用户名" />
-        <input v-model="password" class="input" type="password" placeholder="密码" />
-        <p v-if="error" class="text-sm text-destructive">{{ error }}</p>
+        <Input v-model="username" placeholder="用户名" />
+        <Input v-model="password" type="password" placeholder="密码" />
+        <Alert v-if="error" variant="destructive">
+          <AlertTitle>登录失败</AlertTitle>
+          <AlertDescription>{{ error }}</AlertDescription>
+        </Alert>
         <Button class="w-full" @click="onLogin">登录</Button>
       </div>
     </div>
@@ -17,6 +20,8 @@ import { ref } from "vue";
 import { useAuthStore } from "../stores/auth";
 import { useRouter } from "vue-router";
 import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Alert, AlertDescription, AlertTitle } from "../components/ui/alert";
 
 const username = ref("admin");
 const password = ref("admin123");

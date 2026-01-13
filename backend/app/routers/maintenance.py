@@ -44,6 +44,18 @@ def list_repairs(
     return query.order_by(RepairRecord.id.desc()).all()
 
 
+@router.get("/repairs/{repair_id}", response_model=RepairRecordOut)
+def get_repair(
+    repair_id: int,
+    db: Session = Depends(get_db),
+    _: object = Depends(require_role("super_admin", "asset_admin")),
+):
+    record = db.query(RepairRecord).filter(RepairRecord.id == repair_id, RepairRecord.is_deleted == False).first()
+    if not record:
+        raise HTTPException(status_code=404, detail="Record not found")
+    return record
+
+
 @router.post("/repairs", response_model=RepairRecordOut)
 def create_repair(
     payload: RepairRecordCreate,

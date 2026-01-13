@@ -7,8 +7,14 @@ from app.core.deps import require_role, get_current_user
 from app.models.stocktake import Stocktake, StocktakeItem
 from app.models.asset import Asset
 from app.schemas.stocktake import StocktakeCreate, StocktakeOut
+from app.schemas.common import Message
 
 router = APIRouter(prefix="/api/v1/stocktakes", tags=["stocktakes"])
+
+
+@router.get("", response_model=list[StocktakeOut])
+def list_stocktakes(db: Session = Depends(get_db), _: object = Depends(get_current_user)):
+    return db.query(Stocktake).order_by(Stocktake.id.desc()).all()
 
 
 @router.post("", response_model=StocktakeOut)
@@ -30,12 +36,43 @@ def create_stocktake(
     return task
 
 
+@router.put("/{task_id}", response_model=StocktakeOut)
+def update_stocktake(
+    task_id: int,
+    payload: StocktakeCreate,
+    db: Session = Depends(get_db),
+    _: object = Depends(require_role("super_admin", "asset_admin")),
+):
+    task = db.query(Stocktake).filter(Stocktake.id == task_id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+    task.name = payload.name
+    task.scope = payload.scope
+    db.commit()
+    db.refresh(task)
+    return task
+
+
 @router.get("/{task_id}", response_model=StocktakeOut)
 def get_stocktake(task_id: int, db: Session = Depends(get_db), _: object = Depends(get_current_user)):
     task = db.query(Stocktake).filter(Stocktake.id == task_id).first()
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
     return task
+
+
+@router.delete("/{task_id}", response_model=Message)
+def delete_stocktake(
+    task_id: int,
+    db: Session = Depends(get_db),
+    _: object = Depends(require_role("super_admin", "asset_admin")),
+):
+    task = db.query(Stocktake).filter(Stocktake.id == task_id).first()
+    if not task:
+        raise HTTPException(status_code=404, detail="Task not found")
+    db.delete(task)
+    db.commit()
+    return Message(message="Deleted")
 
 
 @router.post("/{task_id}/scan")

@@ -6,7 +6,7 @@
       <div class="mt-4 flex flex-wrap gap-3">
         <Button variant="outline" @click="downloadTemplate">下载导入模板</Button>
         <label class="inline-flex items-center">
-          <input class="hidden" type="file" accept=".xlsx,.xls" @change="onFileChange" />
+          <Input class="hidden" type="file" accept=".xlsx,.xls" @change="onFileChange" />
           <Button>上传 Excel</Button>
         </label>
       </div>
@@ -46,6 +46,7 @@
 
 <script setup>
 import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
 import api from "../api/client";
 import { ref } from "vue";
 
