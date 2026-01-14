@@ -7,14 +7,14 @@
       <div v-else class="flex">
         <Sidebar class="hidden md:flex" :collapsed="isSidebarCollapsed">
           <SidebarHeader>
-            <div class="flex items-center gap-3">
+            <div v-if="!isSidebarCollapsed" class="flex items-center gap-3">
               <img
                 :src="logoUrl"
                 alt="AssetHub"
                 class="rounded-lg object-contain"
                 :class="isSidebarCollapsed ? 'h-7 w-7' : 'h-[40px] w-auto'"
               />
-              <div v-if="!isSidebarCollapsed" class="flex flex-col justify-center">
+              <div class="flex flex-col justify-center">
                 <div class="text-[1.2rem] font-bold italic tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-lime-500 to-green-600">
                   AssetHub
                 </div>
@@ -67,7 +67,20 @@
 
         <main class="flex-1">
           <header class="flex items-center justify-between border-b bg-background px-6 py-4">
-            <div class="text-base font-semibold">AssetHub 资产管理系统</div>
+            <div v-if="isSidebarCollapsed" class="flex items-center gap-3">
+              <img
+                :src="logoUrl"
+                alt="AssetHub"
+                class="h-7 w-7 rounded-lg object-contain"
+              />
+              <div class="flex flex-col justify-center">
+                <div class="text-[1.2rem] font-bold italic tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-lime-500 to-green-600">
+                  AssetHub
+                </div>
+                <div class="text-[0.65rem] text-muted-foreground">资产管理系统</div>
+              </div>
+            </div>
+            <div v-else />
             <div class="flex items-center gap-2">
               <DropdownMenu v-model:open="notificationOpen">
                 <DropdownMenuTrigger as-child>

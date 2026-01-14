@@ -1,5 +1,9 @@
 # AssetHub 资产管理系统
 
+## 截图
+
+![系统截图](./Screenshot.png)
+
 ## 目录结构
 
 - `backend/` FastAPI 服务
