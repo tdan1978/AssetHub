@@ -18,7 +18,7 @@
                 <div class="text-[1.2rem] font-bold italic tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-lime-500 to-green-600">
                   AssetHub
                 </div>
-                <div class="text-[0.65rem] text-muted-foreground">资产管理系统</div>
+                <div class="text-[0.65rem] text-muted-foreground">IT资产管理系统</div>
               </div>
             </div>
             <SidebarTrigger @click="toggleSidebar">
@@ -77,7 +77,7 @@
                 <div class="text-[1.2rem] font-bold italic tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-lime-500 to-green-600">
                   AssetHub
                 </div>
-                <div class="text-[0.65rem] text-muted-foreground">资产管理系统</div>
+                <div class="text-[0.65rem] text-muted-foreground">IT资产管理系统</div>
               </div>
             </div>
             <div v-else />

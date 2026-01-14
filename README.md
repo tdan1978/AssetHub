@@ -1,4 +1,4 @@
-# AssetHub 资产管理系统
+# AssetHub IT资产管理系统
 
 ## 截图
 
