@@ -1,0 +1,212 @@
+[
+  {
+    "License": "MIT License",
+    "Name": "PyMySQL",
+    "Version": "1.1.1"
+  },
+  {
+    "License": "MIT License",
+    "Name": "PyYAML",
+    "Version": "6.0.3"
+  },
+  {
+    "License": "MIT License",
+    "Name": "SQLAlchemy",
+    "Version": "2.0.34"
+  },
+  {
+    "License": "MIT License",
+    "Name": "annotated-types",
+    "Version": "0.7.0"
+  },
+  {
+    "License": "MIT",
+    "Name": "anyio",
+    "Version": "4.12.1"
+  },
+  {
+    "License": "Apache Software License",
+    "Name": "bcrypt",
+    "Version": "3.2.2"
+  },
+  {
+    "License": "MIT",
+    "Name": "cffi",
+    "Version": "2.0.0"
+  },
+  {
+    "License": "BSD-3-Clause",
+    "Name": "click",
+    "Version": "8.3.1"
+  },
+  {
+    "License": "BSD License",
+    "Name": "colorama",
+    "Version": "0.4.6"
+  },
+  {
+    "License": "Apache Software License; BSD License",
+    "Name": "cryptography",
+    "Version": "43.0.1"
+  },
+  {
+    "License": "MIT",
+    "Name": "ecdsa",
+    "Version": "0.19.1"
+  },
+  {
+    "License": "MIT License",
+    "Name": "et_xmlfile",
+    "Version": "2.0.0"
+  },
+  {
+    "License": "MIT License",
+    "Name": "fastapi",
+    "Version": "0.115.0"
+  },
+  {
+    "License": "MIT AND Python-2.0",
+    "Name": "greenlet",
+    "Version": "3.3.0"
+  },
+  {
+    "License": "MIT License",
+    "Name": "h11",
+    "Version": "0.16.0"
+  },
+  {
+    "License": "MIT",
+    "Name": "httptools",
+    "Version": "0.7.1"
+  },
+  {
+    "License": "BSD-3-Clause",
+    "Name": "idna",
+    "Version": "3.11"
+  },
+  {
+    "License": "BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0",
+    "Name": "numpy",
+    "Version": "2.4.1"
+  },
+  {
+    "License": "MIT License",
+    "Name": "openpyxl",
+    "Version": "3.1.5"
+  },
+  {
+    "License": "BSD License",
+    "Name": "pandas",
+    "Version": "2.2.2"
+  },
+  {
+    "License": "BSD",
+    "Name": "passlib",
+    "Version": "1.7.4"
+  },
+  {
+    "License": "BSD License",
+    "Name": "pyasn1",
+    "Version": "0.6.1"
+  },
+  {
+    "License": "BSD License",
+    "Name": "pycparser",
+    "Version": "2.23"
+  },
+  {
+    "License": "MIT",
+    "Name": "pydantic",
+    "Version": "2.8.2"
+  },
+  {
+    "License": "MIT",
+    "Name": "pydantic-settings",
+    "Version": "2.4.0"
+  },
+  {
+    "License": "MIT License",
+    "Name": "pydantic_core",
+    "Version": "2.20.1"
+  },
+  {
+    "License": "MIT License",
+    "Name": "pypng",
+    "Version": "0.20220715.0"
+  },
+  {
+    "License": "Apache Software License; BSD License",
+    "Name": "python-dateutil",
+    "Version": "2.9.0.post0"
+  },
+  {
+    "License": "BSD-3-Clause",
+    "Name": "python-dotenv",
+    "Version": "1.2.1"
+  },
+  {
+    "License": "MIT License",
+    "Name": "python-jose",
+    "Version": "3.3.0"
+  },
+  {
+    "License": "Apache-2.0",
+    "Name": "python-multipart",
+    "Version": "0.0.9"
+  },
+  {
+    "License": "MIT License",
+    "Name": "pytz",
+    "Version": "2025.2"
+  },
+  {
+    "License": "BSD License",
+    "Name": "qrcode",
+    "Version": "7.4.2"
+  },
+  {
+    "License": "MIT License",
+    "Name": "redis",
+    "Version": "5.0.8"
+  },
+  {
+    "License": "Apache Software License",
+    "Name": "rsa",
+    "Version": "4.9.1"
+  },
+  {
+    "License": "MIT License",
+    "Name": "six",
+    "Version": "1.17.0"
+  },
+  {
+    "License": "BSD-3-Clause",
+    "Name": "starlette",
+    "Version": "0.38.6"
+  },
+  {
+    "License": "PSF-2.0",
+    "Name": "typing_extensions",
+    "Version": "4.15.0"
+  },
+  {
+    "License": "Apache-2.0",
+    "Name": "tzdata",
+    "Version": "2025.3"
+  },
+  {
+    "License": "BSD-3-Clause",
+    "Name": "uvicorn",
+    "Version": "0.30.6"
+  },
+  {
+    "License": "MIT License",
+    "Name": "watchfiles",
+    "Version": "1.1.1"
+  },
+  {
+    "License": "BSD-3-Clause",
+    "Name": "websockets",
+    "Version": "16.0"
+  }
+]

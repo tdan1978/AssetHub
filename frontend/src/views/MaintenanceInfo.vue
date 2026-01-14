@@ -13,12 +13,27 @@
     </div>
 
     <div class="card">
-      <div class="grid gap-3 md:grid-cols-2">
-        <Input v-model="form.asset" placeholder="资产 ID / SN" />
-        <Input v-model="form.contract_no" placeholder="维保合同号" />
-        <Input v-model="form.support_phone" placeholder="厂家报修电话" />
-        <Input v-model="form.vendor" placeholder="供应商" />
-        <DatePicker v-model="form.warranty_at" placeholder="维保到期日" :showMonthYearSelect="true" />
+      <div class="form-grid-2">
+        <div class="form-field">
+          <label class="form-label">资产 ID / SN</label>
+          <Input v-model="form.asset" placeholder="资产 ID / SN" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">维保合同号</label>
+          <Input v-model="form.contract_no" placeholder="维保合同号" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">厂家报修电话</label>
+          <Input v-model="form.support_phone" placeholder="厂家报修电话" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">供应商</label>
+          <Input v-model="form.vendor" placeholder="供应商" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">维保到期日</label>
+          <DatePicker v-model="form.warranty_at" placeholder="维保到期日" :showMonthYearSelect="true" />
+        </div>
       </div>
       <div class="mt-4 flex gap-2">
         <Button variant="outline" @click="loadInfo">加载</Button>

@@ -13,20 +13,35 @@
     </div>
 
     <div class="card">
-      <div class="grid gap-3 md:grid-cols-2">
-        <Input v-model="form.asset_id" placeholder="资产 ID" disabled />
-        <Input v-model="form.issue" placeholder="问题描述" />
-        <Input v-model="form.vendor" placeholder="供应商" />
-        <Input v-model="form.cost" placeholder="费用" />
-        <Select v-model="form.status">
-          <SelectTrigger>
-            <SelectValue placeholder="状态" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="open">处理中</SelectItem>
-            <SelectItem value="closed">已修复</SelectItem>
-          </SelectContent>
-        </Select>
+      <div class="form-grid-2">
+        <div class="form-field">
+          <label class="form-label">资产 ID</label>
+          <Input v-model="form.asset_id" placeholder="资产 ID" disabled />
+        </div>
+        <div class="form-field">
+          <label class="form-label">问题描述</label>
+          <Input v-model="form.issue" placeholder="问题描述" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">供应商</label>
+          <Input v-model="form.vendor" placeholder="供应商" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">费用</label>
+          <Input v-model="form.cost" placeholder="费用" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">状态</label>
+          <Select v-model="form.status">
+            <SelectTrigger class="w-full">
+              <SelectValue placeholder="状态" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="open">处理中</SelectItem>
+              <SelectItem value="closed">已修复</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
       <div class="mt-4">
         <Button @click="save">保存</Button>

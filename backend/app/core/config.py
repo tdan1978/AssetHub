@@ -2,7 +2,7 @@ from pydantic_settings import BaseSettings
 
 
 class Settings(BaseSettings):
-    app_name: str = "ITAM"
+    app_name: str = "AssetHub"
     env: str = "dev"
     database_url: str = "mysql+pymysql://itam:itam@localhost:3306/itam"
     redis_url: str = "redis://localhost:6379/0"

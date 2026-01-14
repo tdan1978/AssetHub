@@ -13,21 +13,36 @@
     </div>
 
     <div class="card">
-      <div class="grid gap-3 md:grid-cols-4">
-        <Input v-model="form.username" placeholder="用户名" disabled />
-        <Input v-model="form.full_name" placeholder="姓名" />
-        <Input v-model="form.dept" placeholder="部门" />
-        <Select v-model="form.role_id">
-          <SelectTrigger>
-            <SelectValue placeholder="选择角色" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem v-for="role in roles" :key="role.id" :value="String(role.id)">
-              {{ role.name }}
-            </SelectItem>
-          </SelectContent>
-        </Select>
-        <Input v-model="form.password" class="md:col-span-2" type="password" placeholder="重置密码(可选)" />
+      <div class="form-grid-4">
+        <div class="form-field">
+          <label class="form-label">用户名</label>
+          <Input v-model="form.username" placeholder="用户名" disabled />
+        </div>
+        <div class="form-field">
+          <label class="form-label">姓名</label>
+          <Input v-model="form.full_name" placeholder="姓名" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">部门</label>
+          <Input v-model="form.dept" placeholder="部门" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">角色</label>
+          <Select v-model="form.role_id">
+            <SelectTrigger class="w-full">
+              <SelectValue placeholder="选择角色" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem v-for="role in roles" :key="role.id" :value="String(role.id)">
+                {{ role.name }}
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div class="form-field md:col-span-2">
+          <label class="form-label">重置密码</label>
+          <Input v-model="form.password" type="password" placeholder="重置密码(可选)" />
+        </div>
       </div>
       <div class="mt-4">
         <Button @click="save">保存</Button>

@@ -3,23 +3,34 @@
     <div class="card">
       <h2 class="text-base font-semibold">操作审计日志</h2>
       <p class="mt-1 text-sm text-muted-foreground">记录资产字段变更与关键操作。</p>
-      <div class="mt-4 grid gap-3 md:grid-cols-4">
-        <Input placeholder="操作人" />
-        <Input placeholder="资产 ID / SN" />
-        <Select v-model="action">
-          <SelectTrigger>
-            <SelectValue placeholder="全部动作" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">全部动作</SelectItem>
-            <SelectItem value="IN">IN</SelectItem>
-            <SelectItem value="OUT">OUT</SelectItem>
-            <SelectItem value="TRANSFER">TRANSFER</SelectItem>
-            <SelectItem value="REPAIR">REPAIR</SelectItem>
-            <SelectItem value="DISCARD">DISCARD</SelectItem>
-          </SelectContent>
-        </Select>
-        <Button>查询</Button>
+      <div class="mt-4 grid gap-4 md:grid-cols-4 items-end">
+        <div class="form-field">
+          <label class="form-label">操作人</label>
+          <Input placeholder="操作人" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">资产 ID / SN</label>
+          <Input placeholder="资产 ID / SN" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">动作</label>
+          <Select v-model="action">
+            <SelectTrigger class="w-full">
+              <SelectValue placeholder="全部动作" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">全部动作</SelectItem>
+              <SelectItem value="IN">IN</SelectItem>
+              <SelectItem value="OUT">OUT</SelectItem>
+              <SelectItem value="TRANSFER">TRANSFER</SelectItem>
+              <SelectItem value="REPAIR">REPAIR</SelectItem>
+              <SelectItem value="DISCARD">DISCARD</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div class="flex items-end">
+          <Button>查询</Button>
+        </div>
       </div>
     </div>
 

@@ -15,6 +15,9 @@ class CategoryField(Base, TimestampMixin):
     field_type = Column(String(30), nullable=False)
     is_required = Column(Boolean, default=False)
     options = Column(JSON, nullable=True)
+    visibility_rules = Column(JSON, nullable=True)
+    reminder_enabled = Column(Boolean, default=False)
+    reminder_days = Column(Integer, nullable=True)
     sort_order = Column(Integer, default=0)
     is_deleted = Column(Boolean, default=False)
 

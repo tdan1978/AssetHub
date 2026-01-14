@@ -13,11 +13,23 @@
     </div>
 
     <div class="card">
-      <div class="grid gap-3 md:grid-cols-2">
-        <Input v-model="form.asset" placeholder="资产 ID / SN" />
-        <Input v-model="form.issue" placeholder="问题描述" />
-        <Input v-model="form.vendor" placeholder="供应商" />
-        <Input v-model="form.cost" placeholder="费用(可选)" />
+      <div class="form-grid-2">
+        <div class="form-field">
+          <label class="form-label">资产 ID / SN</label>
+          <Input v-model="form.asset" placeholder="资产 ID / SN" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">问题描述</label>
+          <Input v-model="form.issue" placeholder="问题描述" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">供应商</label>
+          <Input v-model="form.vendor" placeholder="供应商" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">费用</label>
+          <Input v-model="form.cost" placeholder="费用(可选)" />
+        </div>
       </div>
       <div class="mt-4">
         <Button @click="save">提交报修</Button>

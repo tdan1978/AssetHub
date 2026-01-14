@@ -172,4 +172,24 @@ body {
   .table tbody tr {
     @apply border-b;
   }
+
+  .form-grid {
+    @apply grid gap-4 md:grid-cols-3;
+  }
+
+  .form-grid-2 {
+    @apply grid gap-4 md:grid-cols-2;
+  }
+
+  .form-grid-4 {
+    @apply grid gap-4 md:grid-cols-4;
+  }
+
+  .form-field {
+    @apply space-y-2;
+  }
+
+  .form-label {
+    @apply text-sm font-medium;
+  }
 }

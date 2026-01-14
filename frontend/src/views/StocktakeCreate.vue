@@ -13,9 +13,15 @@
     </div>
 
     <div class="card">
-      <div class="grid gap-3 md:grid-cols-2">
-        <Input v-model="form.name" placeholder="盘点名称" />
-        <Input v-model="form.scope" placeholder="范围描述" />
+      <div class="form-grid-2">
+        <div class="form-field">
+          <label class="form-label">盘点名称</label>
+          <Input v-model="form.name" placeholder="盘点名称" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">范围描述</label>
+          <Input v-model="form.scope" placeholder="范围描述" />
+        </div>
       </div>
       <div class="mt-4">
         <Button @click="save">发起盘点</Button>

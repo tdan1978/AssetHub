@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy import or_
 
 from app.core.database import get_db
 from app.core.deps import require_role, get_current_user
@@ -12,8 +13,17 @@ router = APIRouter(prefix="/api/v1/licenses", tags=["licenses"])
 
 
 @router.get("", response_model=Page[LicenseOut])
-def list_licenses(page: int = 1, size: int = 20, db: Session = Depends(get_db), _: object = Depends(get_current_user)):
+def list_licenses(
+    page: int = 1,
+    size: int = 20,
+    q: str | None = None,
+    db: Session = Depends(get_db),
+    _: object = Depends(get_current_user),
+):
     query = db.query(License)
+    if q:
+        like = f"%{q}%"
+        query = query.filter(or_(License.software_name.like(like), License.vendor.like(like)))
     total, items = paginate(query.order_by(License.id.desc()), page, size)
     return Page(total=total, items=items)
 

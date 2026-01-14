@@ -8,6 +8,13 @@ from app.models.maintenance import MaintenanceInfo, RepairRecord
 from app.models.role import Role
 from app.models.user import User
 from app.models.stocktake import Stocktake, StocktakeItem
+from app.models.system_app import SystemApp
+from app.models.system_field import SystemField
+from app.models.system_field_category import SystemFieldCategory
+from app.models.system_field_value import SystemFieldValue
+from app.models.software_field_category import SoftwareFieldCategory
+from app.models.software_field import SoftwareField
+from app.models.software_field_value import SoftwareFieldValue
 
 __all__ = [
     "Asset",
@@ -22,4 +29,11 @@ __all__ = [
     "User",
     "Stocktake",
     "StocktakeItem",
+    "SystemApp",
+    "SystemField",
+    "SystemFieldCategory",
+    "SystemFieldValue",
+    "SoftwareFieldCategory",
+    "SoftwareField",
+    "SoftwareFieldValue",
 ]

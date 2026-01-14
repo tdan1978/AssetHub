@@ -47,7 +47,7 @@
       </table>
     </div>
 
-    <AlertDialog v-model:open="confirmOpen">
+    <AlertDialog v-if="confirmOpen" v-model:open="confirmOpen">
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>确认删除</AlertDialogTitle>

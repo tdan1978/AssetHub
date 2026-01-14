@@ -5,65 +5,136 @@
         <router-view />
       </div>
       <div v-else class="flex">
-        <aside class="hidden min-h-screen w-72 border-r bg-background px-4 py-6 md:block">
-          <div class="flex items-center gap-3 px-2">
-            <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-sm font-semibold text-primary-foreground">
-              IT
-            </div>
-            <div class="space-y-1">
-              <div class="text-sm font-semibold tracking-wide">ITAM</div>
-              <div class="text-xs text-muted-foreground">资产管理系统</div>
-            </div>
-          </div>
-          <nav class="mt-6 space-y-3">
-            <div v-for="group in menuGroups" :key="group.title" class="space-y-1">
-              <Button
-                variant="ghost"
-                class="sidebar-group"
-                @click="toggleGroup(group.title)"
-              >
-                <component :is="group.icon" class="h-4 w-4" />
-                <span class="flex-1 text-left text-sm font-medium">{{ group.title }}</span>
-                <ChevronDown
-                  class="h-4 w-4 transition-transform"
-                  :class="{ 'rotate-180': isGroupOpen(group.title) }"
-                />
-              </Button>
-              <div v-show="isGroupOpen(group.title)" class="space-y-1 pl-6">
-                <RouterLink
-                  v-for="item in group.items"
-                  :key="item.to"
-                  :to="item.to"
-                  class="sidebar-link"
-                  :class="{ 'sidebar-link-active': isActive(item.to) }"
-                >
-                  <component :is="item.icon" class="h-4 w-4" />
-                  <span class="text-sm">{{ item.label }}</span>
-                </RouterLink>
+        <Sidebar class="hidden md:flex" :collapsed="isSidebarCollapsed">
+          <SidebarHeader>
+            <div class="flex items-center gap-3">
+              <img
+                :src="logoUrl"
+                alt="AssetHub"
+                class="rounded-lg object-contain"
+                :class="isSidebarCollapsed ? 'h-7 w-7' : 'h-[40px] w-auto'"
+              />
+              <div v-if="!isSidebarCollapsed" class="flex flex-col justify-center">
+                <div class="text-[1.2rem] font-bold italic tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-lime-500 to-green-600">
+                  AssetHub
+                </div>
+                <div class="text-[0.65rem] text-muted-foreground">资产管理系统</div>
               </div>
             </div>
-          </nav>
-        </aside>
+            <SidebarTrigger @click="toggleSidebar">
+              <PanelLeft class="h-4 w-4" />
+            </SidebarTrigger>
+          </SidebarHeader>
+          <SidebarContent>
+            <nav class="space-y-3">
+              <SidebarGroup v-for="group in menuGroups" :key="group.title">
+                <SidebarGroupLabel v-if="!isSidebarCollapsed">{{ group.title }}</SidebarGroupLabel>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <Button
+                      variant="ghost"
+                      class="sidebar-group"
+                      @click="toggleGroup(group.title)"
+                    >
+                      <component :is="group.icon" class="h-4 w-4" />
+                      <span v-if="!isSidebarCollapsed" class="flex-1 text-left text-sm font-medium">
+                        {{ group.title }}
+                      </span>
+                      <ChevronDown
+                        v-if="!isSidebarCollapsed"
+                        class="h-4 w-4 transition-transform"
+                        :class="{ 'rotate-180': isGroupOpen(group.title) }"
+                      />
+                    </Button>
+                  </SidebarMenuItem>
+                  <div v-show="!isSidebarCollapsed && isGroupOpen(group.title)" class="space-y-1 pl-6">
+                    <RouterLink
+                      v-for="item in group.items"
+                      :key="item.to"
+                      :to="item.to"
+                      class="sidebar-link"
+                      :class="{ 'sidebar-link-active': isActive(item.to) }"
+                    >
+                      <component :is="item.icon" class="h-4 w-4" />
+                      <span class="text-sm">{{ item.label }}</span>
+                    </RouterLink>
+                  </div>
+                </SidebarMenu>
+              </SidebarGroup>
+            </nav>
+          </SidebarContent>
+        </Sidebar>
 
         <main class="flex-1">
           <header class="flex items-center justify-between border-b bg-background px-6 py-4">
-            <div class="text-base font-semibold">IT 资产管理系统</div>
-            <DropdownMenu>
-              <DropdownMenuTrigger as-child>
-                <Button variant="ghost" class="flex items-center gap-2 px-2">
-                  <Avatar class="h-8 w-8">
-                    <AvatarImage :src="avatarUrl" alt="" />
-                    <AvatarFallback>{{ userInitial }}</AvatarFallback>
-                  </Avatar>
-                  <span class="text-sm font-medium text-foreground">{{ auth.username || "未登录" }}</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" class="w-40">
-                <DropdownMenuItem @select="openChangePassword">修改密码</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem variant="destructive" @select="handleLogout">退出</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <div class="text-base font-semibold">AssetHub 资产管理系统</div>
+            <div class="flex items-center gap-2">
+              <DropdownMenu v-model:open="notificationOpen">
+                <DropdownMenuTrigger as-child>
+                  <Button variant="ghost" class="relative h-9 w-9 p-0">
+                    <Bell class="h-4 w-4" />
+                    <span
+                      v-if="unreadCount"
+                      class="absolute -right-1 -top-1 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold text-white"
+                    >
+                      {{ unreadCount }}
+                    </span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" class="w-80">
+                  <div class="px-3 py-2 text-sm font-semibold">系统消息</div>
+                  <div v-if="notificationsLoading" class="flex items-center gap-2 px-3 py-3 text-sm text-muted-foreground">
+                    <Spinner class="size-4" />
+                    加载中...
+                  </div>
+                  <div v-else-if="!visibleNotifications.length" class="px-3 py-3 text-sm text-muted-foreground">
+                    暂无消息
+                  </div>
+                  <div v-else class="max-h-80 overflow-auto">
+                    <div
+                      v-for="item in visibleNotifications"
+                      :key="item.id"
+                      class="border-t px-3 py-2 text-sm"
+                    >
+                      <div class="flex items-start justify-between gap-2">
+                        <div class="space-y-1">
+                          <div class="font-medium text-foreground">{{ item.title }}</div>
+                          <div class="text-xs text-muted-foreground">{{ item.message }}</div>
+                          <div v-if="item.due_date" class="text-xs text-muted-foreground">
+                            到期日：{{ item.due_date }}
+                          </div>
+                        </div>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          class="h-7 px-2 text-xs"
+                          @click="markRead(item.id)"
+                        >
+                          已读
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger as-child>
+                  <Button variant="ghost" class="flex items-center gap-2 px-2">
+                    <Avatar class="h-8 w-8">
+                      <AvatarImage :src="avatarUrl" alt="" />
+                      <AvatarFallback>{{ userInitial }}</AvatarFallback>
+                    </Avatar>
+                    <span class="text-sm font-medium text-foreground">{{ auth.username || "未登录" }}</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" class="w-40">
+                  <DropdownMenuItem @select="openChangePassword">修改密码</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem variant="destructive" @select="handleLogout">退出</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </header>
 
           <section class="p-6">
@@ -125,13 +196,25 @@
 </template>
 
 <script setup>
-import { computed, reactive, ref, watch } from "vue";
+import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import api from "./api/client";
 import { useAuthStore } from "./stores/auth";
+import logoUrl from "./assets/logo.png";
 import { Alert, AlertDescription, AlertTitle } from "./components/ui/alert";
 import { Avatar, AvatarFallback, AvatarImage } from "./components/ui/avatar";
 import { Button } from "./components/ui/button";
+import { Spinner } from "./components/ui/spinner";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarTrigger
+} from "./components/ui/sidebar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -150,6 +233,7 @@ import {
 import { Input } from "./components/ui/input";
 import {
   ArrowLeftRight,
+  Bell,
   Boxes,
   ClipboardCheck,
   ClipboardList,
@@ -159,6 +243,7 @@ import {
   KeyRound,
   LayoutDashboard,
   ListTree,
+  PanelLeft,
   QrCode,
   Settings,
   Shield,
@@ -198,7 +283,8 @@ const menuGroups = [
     title: "软件资产",
     icon: KeyRound,
     items: [
-      { label: "授权管理", to: "/licenses", icon: KeyRound }
+      { label: "软件资产台账", to: "/licenses", icon: KeyRound },
+      { label: "字段分类", to: "/software-field-categories", icon: ListTree }
     ]
   },
   {
@@ -210,9 +296,18 @@ const menuGroups = [
     ]
   },
   {
+    title: "系统资产管理",
+    icon: FileSearch,
+    items: [
+      { label: "系统资产台账", to: "/systems", icon: ClipboardList },
+      { label: "字段分类", to: "/system-field-categories", icon: ListTree }
+    ]
+  },
+  {
     title: "系统",
     icon: Settings,
     items: [
+      { label: "系统消息", to: "/notifications", icon: Bell },
       { label: "用户管理", to: "/users", icon: Users },
       { label: "角色权限", to: "/roles", icon: Shield },
       { label: "操作审计", to: "/logs", icon: FileSearch },
@@ -222,7 +317,13 @@ const menuGroups = [
   }
 ];
 
-const openGroups = ref(menuGroups.map((group) => group.title));
+const openGroups = ref([]);
+const isSidebarCollapsed = ref(false);
+const notifications = ref([]);
+const readNotificationIds = ref(new Set());
+const notificationsLoading = ref(false);
+const notificationOpen = ref(false);
+const notificationTimer = ref(null);
 
 const changePasswordOpen = ref(false);
 const isSavingPassword = ref(false);
@@ -258,6 +359,13 @@ const toggleGroup = (title) => {
   }
 };
 
+const toggleSidebar = () => {
+  isSidebarCollapsed.value = !isSidebarCollapsed.value;
+  if (isSidebarCollapsed.value) {
+    openGroups.value = [];
+  }
+};
+
 const resetPasswordForm = () => {
   passwordForm.oldPassword = "";
   passwordForm.newPassword = "";
@@ -275,14 +383,87 @@ watch(changePasswordOpen, (open) => {
 watch(
   () => route.path,
   () => {
-    const activeGroup = menuGroups.find((group) =>
-      group.items.some((item) => isActive(item.to))
-    );
-    if (activeGroup && !isGroupOpen(activeGroup.title)) {
-      openGroups.value = [...openGroups.value, activeGroup.title];
+    if (isSidebarCollapsed.value) {
+      openGroups.value = [];
     }
   }
 );
+
+const loadNotifications = async () => {
+  notificationsLoading.value = true;
+  try {
+    const { data } = await api.get("/notifications");
+    notifications.value = data;
+  } finally {
+    notificationsLoading.value = false;
+  }
+};
+
+watch(notificationOpen, (open) => {
+  if (open) {
+    loadNotifications();
+  }
+});
+
+const visibleNotifications = computed(() =>
+  notifications.value.filter((item) => !readNotificationIds.value.has(item.id))
+);
+
+const unreadCount = computed(() => visibleNotifications.value.length);
+
+const persistReadIds = (nextSet) => {
+  readNotificationIds.value = new Set(nextSet);
+  localStorage.setItem("assethub_read_notifications", JSON.stringify([...readNotificationIds.value]));
+  window.dispatchEvent(new Event("assethub-notifications-updated"));
+};
+
+const markRead = (id) => {
+  const next = new Set(readNotificationIds.value);
+  next.add(id);
+  persistReadIds(next);
+};
+
+onMounted(() => {
+  const cached = localStorage.getItem("assethub_read_notifications");
+  if (cached) {
+    try {
+      readNotificationIds.value = new Set(JSON.parse(cached));
+    } catch {
+      readNotificationIds.value = new Set();
+    }
+  }
+  loadNotifications();
+  notificationTimer.value = setInterval(loadNotifications, 60000);
+  window.addEventListener("assethub-notifications-updated", reloadReadIds);
+  window.addEventListener("storage", handleStorageSync);
+});
+
+onBeforeUnmount(() => {
+  if (notificationTimer.value) {
+    clearInterval(notificationTimer.value);
+  }
+  window.removeEventListener("assethub-notifications-updated", reloadReadIds);
+  window.removeEventListener("storage", handleStorageSync);
+});
+
+const reloadReadIds = () => {
+  const cached = localStorage.getItem("assethub_read_notifications");
+  if (!cached) {
+    readNotificationIds.value = new Set();
+    return;
+  }
+  try {
+    readNotificationIds.value = new Set(JSON.parse(cached));
+  } catch {
+    readNotificationIds.value = new Set();
+  }
+};
+
+const handleStorageSync = (event) => {
+  if (event.key === "assethub_read_notifications") {
+    reloadReadIds();
+  }
+};
 
 const openChangePassword = () => {
   changePasswordOpen.value = true;

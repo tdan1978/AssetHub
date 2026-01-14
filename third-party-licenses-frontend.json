@@ -1,0 +1,623 @@
+{
+  "@babel/helper-string-parser@7.27.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel",
+    "publisher": "The Babel Team",
+    "url": "https://babel.dev/team",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@babel\\helper-string-parser",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@babel\\helper-string-parser\\LICENSE"
+  },
+  "@babel/helper-validator-identifier@7.28.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel",
+    "publisher": "The Babel Team",
+    "url": "https://babel.dev/team",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@babel\\helper-validator-identifier",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@babel\\helper-validator-identifier\\LICENSE"
+  },
+  "@babel/parser@7.28.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel",
+    "publisher": "The Babel Team",
+    "url": "https://babel.dev/team",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@babel\\parser",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@babel\\parser\\LICENSE"
+  },
+  "@babel/types@7.28.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/babel/babel",
+    "publisher": "The Babel Team",
+    "url": "https://babel.dev/team",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@babel\\types",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@babel\\types\\LICENSE"
+  },
+  "@floating-ui/core@1.7.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/floating-ui/floating-ui",
+    "publisher": "atomiks",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@floating-ui\\core",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@floating-ui\\core\\LICENSE"
+  },
+  "@floating-ui/dom@1.7.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/floating-ui/floating-ui",
+    "publisher": "atomiks",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@floating-ui\\dom",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@floating-ui\\dom\\LICENSE"
+  },
+  "@floating-ui/utils@0.2.10": {
+    "licenses": "MIT",
+    "repository": "https://github.com/floating-ui/floating-ui",
+    "publisher": "atomiks",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@floating-ui\\utils",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@floating-ui\\utils\\LICENSE"
+  },
+  "@floating-ui/vue@1.1.9": {
+    "licenses": "MIT",
+    "repository": "https://github.com/floating-ui/floating-ui",
+    "publisher": "lozinsky",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@floating-ui\\vue",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@floating-ui\\vue\\LICENSE"
+  },
+  "@internationalized/date@3.10.1": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/adobe/react-spectrum/tree/main/packages/@internationalized/date",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@internationalized\\date",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@internationalized\\date\\LICENSE"
+  },
+  "@internationalized/number@3.6.5": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/adobe/react-spectrum",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@internationalized\\number",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@internationalized\\number\\LICENSE"
+  },
+  "@jridgewell/sourcemap-codec@1.5.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jridgewell/sourcemaps",
+    "publisher": "Justin Ridgewell",
+    "email": "justin@ridgewell.name",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@jridgewell\\sourcemap-codec",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@jridgewell\\sourcemap-codec\\LICENSE"
+  },
+  "@swc/helpers@0.5.18": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/swc-project/swc",
+    "publisher": "臧曤彊鞙?,
+    "email": "kdy1997.dev@gmail.com",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@swc\\helpers",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@swc\\helpers\\LICENSE"
+  },
+  "@tanstack/virtual-core@3.13.18": {
+    "licenses": "MIT",
+    "repository": "https://github.com/TanStack/virtual",
+    "publisher": "Tanner Linsley",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@tanstack\\virtual-core",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@tanstack\\virtual-core\\LICENSE"
+  },
+  "@tanstack/vue-virtual@3.13.18": {
+    "licenses": "MIT",
+    "repository": "https://github.com/TanStack/virtual",
+    "publisher": "Tanner Linsley",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@tanstack\\vue-virtual",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@tanstack\\vue-virtual\\LICENSE"
+  },
+  "@types/web-bluetooth@0.0.20": {
+    "licenses": "MIT",
+    "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@types\\web-bluetooth",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@types\\web-bluetooth\\LICENSE"
+  },
+  "@types/web-bluetooth@0.0.21": {
+    "licenses": "MIT",
+    "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\reka-ui\\node_modules\\@types\\web-bluetooth",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\reka-ui\\node_modules\\@types\\web-bluetooth\\LICENSE"
+  },
+  "@vue/compiler-core@3.5.26": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/core",
+    "publisher": "Evan You",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@vue\\compiler-core",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@vue\\compiler-core\\LICENSE"
+  },
+  "@vue/compiler-dom@3.5.26": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/core",
+    "publisher": "Evan You",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@vue\\compiler-dom",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@vue\\compiler-dom\\LICENSE"
+  },
+  "@vue/compiler-sfc@3.5.26": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/core",
+    "publisher": "Evan You",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@vue\\compiler-sfc",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@vue\\compiler-sfc\\LICENSE"
+  },
+  "@vue/compiler-ssr@3.5.26": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/core",
+    "publisher": "Evan You",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@vue\\compiler-ssr",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@vue\\compiler-ssr\\LICENSE"
+  },
+  "@vue/devtools-api@6.6.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/vue-devtools",
+    "publisher": "Guillaume Chau",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@vue\\devtools-api"
+  },
+  "@vue/reactivity@3.5.26": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/core",
+    "publisher": "Evan You",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@vue\\reactivity",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@vue\\reactivity\\LICENSE"
+  },
+  "@vue/runtime-core@3.5.26": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/core",
+    "publisher": "Evan You",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@vue\\runtime-core",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@vue\\runtime-core\\LICENSE"
+  },
+  "@vue/runtime-dom@3.5.26": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/core",
+    "publisher": "Evan You",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@vue\\runtime-dom",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@vue\\runtime-dom\\LICENSE"
+  },
+  "@vue/server-renderer@3.5.26": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/core",
+    "publisher": "Evan You",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@vue\\server-renderer",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@vue\\server-renderer\\LICENSE"
+  },
+  "@vue/shared@3.5.26": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/core",
+    "publisher": "Evan You",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@vue\\shared",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@vue\\shared\\LICENSE"
+  },
+  "@vueuse/core@10.11.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vueuse/vueuse",
+    "publisher": "Anthony Fu",
+    "email": "https://github.com/antfu",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\vaul-vue\\node_modules\\@vueuse\\core",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\vaul-vue\\node_modules\\@vueuse\\core\\LICENSE"
+  },
+  "@vueuse/core@11.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vueuse/vueuse",
+    "publisher": "Anthony Fu",
+    "email": "https://github.com/antfu",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@vueuse\\core",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@vueuse\\core\\LICENSE"
+  },
+  "@vueuse/core@12.8.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vueuse/vueuse",
+    "publisher": "Anthony Fu",
+    "email": "https://github.com/antfu",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\reka-ui\\node_modules\\@vueuse\\core",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\reka-ui\\node_modules\\@vueuse\\core\\LICENSE"
+  },
+  "@vueuse/metadata@10.11.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vueuse/vueuse",
+    "publisher": "Anthony Fu",
+    "email": "https://github.com/antfu",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\vaul-vue\\node_modules\\@vueuse\\metadata",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\vaul-vue\\node_modules\\@vueuse\\metadata\\LICENSE"
+  },
+  "@vueuse/metadata@11.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vueuse/vueuse",
+    "publisher": "Anthony Fu",
+    "email": "https://github.com/antfu",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@vueuse\\metadata",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@vueuse\\metadata\\LICENSE"
+  },
+  "@vueuse/metadata@12.8.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vueuse/vueuse",
+    "publisher": "Anthony Fu",
+    "email": "https://github.com/antfu",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\reka-ui\\node_modules\\@vueuse\\metadata",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\reka-ui\\node_modules\\@vueuse\\metadata\\LICENSE"
+  },
+  "@vueuse/shared@10.11.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vueuse/vueuse",
+    "publisher": "Anthony Fu",
+    "email": "https://github.com/antfu",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\vaul-vue\\node_modules\\@vueuse\\shared",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\vaul-vue\\node_modules\\@vueuse\\shared\\LICENSE"
+  },
+  "@vueuse/shared@11.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vueuse/vueuse",
+    "publisher": "Anthony Fu",
+    "email": "https://github.com/antfu",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@vueuse\\shared",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\@vueuse\\shared\\LICENSE"
+  },
+  "@vueuse/shared@12.8.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vueuse/vueuse",
+    "publisher": "Anthony Fu",
+    "email": "https://github.com/antfu",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\reka-ui\\node_modules\\@vueuse\\shared",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\reka-ui\\node_modules\\@vueuse\\shared\\LICENSE"
+  },
+  "aria-hidden@1.2.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/theKashey/aria-hidden",
+    "publisher": "Anton Korzunov",
+    "email": "thekashey@gmail.com",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\aria-hidden",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\aria-hidden\\LICENSE"
+  },
+  "asynckit@0.4.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/alexindigo/asynckit",
+    "publisher": "Alex Indigo",
+    "email": "iam@alexindigo.com",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\asynckit",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\asynckit\\LICENSE"
+  },
+  "axios@1.13.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/axios/axios",
+    "publisher": "Matt Zabriskie",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\axios",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\axios\\LICENSE"
+  },
+  "call-bind-apply-helpers@1.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/call-bind-apply-helpers",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\call-bind-apply-helpers",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\call-bind-apply-helpers\\LICENSE"
+  },
+  "class-variance-authority@0.7.1": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/joe-bell/cva",
+    "publisher": "Joe Bell",
+    "url": "https://joebell.co.uk",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\class-variance-authority",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\class-variance-authority\\LICENSE"
+  },
+  "clsx@2.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lukeed/clsx",
+    "publisher": "Luke Edwards",
+    "email": "luke.edwards05@gmail.com",
+    "url": "https://lukeed.com",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\clsx",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\clsx\\license"
+  },
+  "combined-stream@1.0.8": {
+    "licenses": "MIT",
+    "repository": "https://github.com/felixge/node-combined-stream",
+    "publisher": "Felix Geisend枚rfer",
+    "email": "felix@debuggable.com",
+    "url": "http://debuggable.com/",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\combined-stream",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\combined-stream\\License"
+  },
+  "csstype@3.2.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/frenic/csstype",
+    "publisher": "Fredrik Nicol",
+    "email": "fredrik.nicol@gmail.com",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\csstype",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\csstype\\LICENSE"
+  },
+  "defu@6.1.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/unjs/defu",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\defu",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\defu\\LICENSE"
+  },
+  "delayed-stream@1.0.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/felixge/node-delayed-stream",
+    "publisher": "Felix Geisend枚rfer",
+    "email": "felix@debuggable.com",
+    "url": "http://debuggable.com/",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\delayed-stream",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\delayed-stream\\License"
+  },
+  "dunder-proto@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/es-shims/dunder-proto",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\dunder-proto",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\dunder-proto\\LICENSE"
+  },
+  "entities@7.0.0": {
+    "licenses": "BSD-2-Clause",
+    "repository": "https://github.com/fb55/entities",
+    "publisher": "Felix Boehm",
+    "email": "me@feedic.com",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\entities",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\entities\\LICENSE"
+  },
+  "es-define-property@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/es-define-property",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\es-define-property",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\es-define-property\\LICENSE"
+  },
+  "es-errors@1.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/es-errors",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\es-errors",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\es-errors\\LICENSE"
+  },
+  "es-object-atoms@1.1.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/es-object-atoms",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\es-object-atoms",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\es-object-atoms\\LICENSE"
+  },
+  "es-set-tostringtag@2.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/es-shims/es-set-tostringtag",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\es-set-tostringtag",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\es-set-tostringtag\\LICENSE"
+  },
+  "estree-walker@2.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/Rich-Harris/estree-walker",
+    "publisher": "Rich Harris",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\estree-walker",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\estree-walker\\LICENSE"
+  },
+  "follow-redirects@1.15.11": {
+    "licenses": "MIT",
+    "repository": "https://github.com/follow-redirects/follow-redirects",
+    "publisher": "Ruben Verborgh",
+    "email": "ruben@verborgh.org",
+    "url": "https://ruben.verborgh.org/",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\follow-redirects",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\follow-redirects\\LICENSE"
+  },
+  "form-data@4.0.5": {
+    "licenses": "MIT",
+    "repository": "https://github.com/form-data/form-data",
+    "publisher": "Felix Geisend枚rfer",
+    "email": "felix@debuggable.com",
+    "url": "http://debuggable.com/",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\form-data",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\form-data\\License"
+  },
+  "function-bind@1.1.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/Raynos/function-bind",
+    "publisher": "Raynos",
+    "email": "raynos2@gmail.com",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\function-bind",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\function-bind\\LICENSE"
+  },
+  "get-intrinsic@1.3.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/get-intrinsic",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\get-intrinsic",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\get-intrinsic\\LICENSE"
+  },
+  "get-proto@1.0.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/get-proto",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\get-proto",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\get-proto\\LICENSE"
+  },
+  "gopd@1.2.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ljharb/gopd",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\gopd",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\gopd\\LICENSE"
+  },
+  "has-symbols@1.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/inspect-js/has-symbols",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "url": "http://ljharb.codes",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\has-symbols",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\has-symbols\\LICENSE"
+  },
+  "has-tostringtag@1.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/inspect-js/has-tostringtag",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "url": "http://ljharb.codes",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\has-tostringtag",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\has-tostringtag\\LICENSE"
+  },
+  "hasown@2.0.2": {
+    "licenses": "MIT",
+    "repository": "https://github.com/inspect-js/hasOwn",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\hasown",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\hasown\\LICENSE"
+  },
+  "lucide-vue-next@0.542.0": {
+    "licenses": "ISC",
+    "repository": "https://github.com/lucide-icons/lucide",
+    "publisher": "Eric Fennis",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\lucide-vue-next",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\lucide-vue-next\\LICENSE"
+  },
+  "magic-string@0.30.21": {
+    "licenses": "MIT",
+    "repository": "https://github.com/Rich-Harris/magic-string",
+    "publisher": "Rich Harris",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\magic-string",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\magic-string\\LICENSE"
+  },
+  "math-intrinsics@1.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/es-shims/math-intrinsics",
+    "publisher": "Jordan Harband",
+    "email": "ljharb@gmail.com",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\math-intrinsics",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\math-intrinsics\\LICENSE"
+  },
+  "mime-db@1.52.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/mime-db",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\mime-db",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\mime-db\\LICENSE"
+  },
+  "mime-types@2.1.35": {
+    "licenses": "MIT",
+    "repository": "https://github.com/jshttp/mime-types",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\mime-types",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\mime-types\\LICENSE"
+  },
+  "nanoid@3.3.11": {
+    "licenses": "MIT",
+    "repository": "https://github.com/ai/nanoid",
+    "publisher": "Andrey Sitnik",
+    "email": "andrey@sitnik.ru",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\nanoid",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\nanoid\\LICENSE"
+  },
+  "ohash@2.0.11": {
+    "licenses": "MIT",
+    "repository": "https://github.com/unjs/ohash",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\ohash",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\ohash\\LICENSE"
+  },
+  "picocolors@1.1.1": {
+    "licenses": "ISC",
+    "repository": "https://github.com/alexeyraspopov/picocolors",
+    "publisher": "Alexey Raspopov",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\picocolors",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\picocolors\\LICENSE"
+  },
+  "pinia@2.3.1": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/pinia",
+    "publisher": "Eduardo San Martin Morote",
+    "email": "posva13@gmail.com",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\pinia",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\pinia\\LICENSE"
+  },
+  "postcss@8.5.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/postcss/postcss",
+    "publisher": "Andrey Sitnik",
+    "email": "andrey@sitnik.ru",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\postcss",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\postcss\\LICENSE"
+  },
+  "proxy-from-env@1.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/Rob--W/proxy-from-env",
+    "publisher": "Rob Wu",
+    "email": "rob@robwu.nl",
+    "url": "https://robwu.nl/",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\proxy-from-env",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\proxy-from-env\\LICENSE"
+  },
+  "reka-ui@2.7.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/unovue/reka-ui",
+    "publisher": "UnoVue Contributors",
+    "url": "https://github.com/unovue",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\reka-ui",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\reka-ui\\LICENSE"
+  },
+  "source-map-js@1.2.1": {
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/7rulnik/source-map-js",
+    "publisher": "Valentin 7rulnik Semirulnik",
+    "email": "v7rulnik@gmail.com",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\source-map-js",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\source-map-js\\LICENSE"
+  },
+  "tailwind-merge@2.6.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/dcastil/tailwind-merge",
+    "publisher": "Dany Castillo",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\tailwind-merge",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\tailwind-merge\\LICENSE.md"
+  },
+  "tslib@2.8.1": {
+    "licenses": "0BSD",
+    "repository": "https://github.com/Microsoft/tslib",
+    "publisher": "Microsoft Corp.",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\tslib",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\tslib\\LICENSE.txt"
+  },
+  "tw-animate-css@1.4.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/Wombosvideo/tw-animate-css",
+    "publisher": "Luca Bosin",
+    "url": "https://github.com/Wombosvideo",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\tw-animate-css",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\tw-animate-css\\LICENSE"
+  },
+  "typescript@5.9.3": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/microsoft/TypeScript",
+    "publisher": "Microsoft Corp.",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\typescript",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\typescript\\LICENSE.txt"
+  },
+  "vaul-vue@0.4.1": {
+    "licenses": "Custom: https://www.reka-ui.com/docs/components/dialog",
+    "repository": "https://github.com/Elliot-Alexander/vaul-vue",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\vaul-vue",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\vaul-vue\\README.md"
+  },
+  "vue-demi@0.14.10": {
+    "licenses": "MIT",
+    "repository": "https://github.com/antfu/vue-demi",
+    "publisher": "Anthony Fu",
+    "email": "anthonyfu117@hotmail.com",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\vue-demi",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\vue-demi\\LICENSE"
+  },
+  "vue-router@4.6.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/router",
+    "publisher": "Eduardo San Martin Morote",
+    "email": "posva13@gmail.com",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\vue-router",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\vue-router\\LICENSE"
+  },
+  "vue@3.5.26": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vuejs/core",
+    "publisher": "Evan You",
+    "path": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\vue",
+    "licenseFile": "D:\\DEV\\璧勪骇鐧昏缁熻\\frontend\\node_modules\\vue\\LICENSE"
+  }
+}
+

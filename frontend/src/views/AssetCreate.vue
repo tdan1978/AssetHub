@@ -13,25 +13,37 @@
     </div>
 
     <div class="card">
-      <div class="grid gap-3 md:grid-cols-4">
-        <Input v-model="form.sn" placeholder="SN" />
-        <Input v-model="form.asset_no" placeholder="编号(可选)" />
-        <Input v-model="form.name" placeholder="名称" />
-        <Select v-model="form.category_id" @update:modelValue="onCategoryChange">
-          <SelectTrigger>
-            <SelectValue placeholder="选择类型" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem v-for="item in categories" :key="item.id" :value="item.id">
-              {{ item.name }}
-            </SelectItem>
-          </SelectContent>
-        </Select>
+      <div class="form-grid-4">
+        <div class="form-field">
+          <label class="form-label">SN</label>
+          <Input v-model="form.sn" placeholder="SN" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">编号</label>
+          <Input v-model="form.asset_no" placeholder="编号(可选)" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">名称</label>
+          <Input v-model="form.name" placeholder="名称" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">资产类型</label>
+          <Select v-model="form.category_id" @update:modelValue="onCategoryChange">
+            <SelectTrigger class="w-full">
+              <SelectValue placeholder="选择类型" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem v-for="item in categories" :key="item.id" :value="item.id">
+                {{ item.name }}
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
-      <div v-if="fields.length" class="mt-4 grid gap-3 md:grid-cols-2">
-        <div v-for="field in fields" :key="field.id" class="space-y-1">
-          <label class="text-xs text-muted-foreground">
+      <div v-show="fields.length" class="mt-6 form-grid-2">
+        <div v-for="field in fields" :key="field.id" class="form-field" v-show="shouldShowField(field)">
+          <label class="form-label">
             {{ field.name }} <span v-if="field.is_required">*</span>
           </label>
           <Input v-if="field.field_type === 'text'" v-model="fieldValues[field.id]" />
@@ -39,7 +51,7 @@
           <Input v-else-if="field.field_type === 'number'" v-model="fieldValues[field.id]" type="number" />
           <DatePicker v-else-if="field.field_type === 'date'" v-model="fieldValues[field.id]" :showMonthYearSelect="true" />
           <Select v-else-if="field.field_type === 'single_select'" v-model="fieldValues[field.id]">
-            <SelectTrigger>
+            <SelectTrigger class="w-full">
               <SelectValue placeholder="选择" />
             </SelectTrigger>
             <SelectContent>
@@ -57,9 +69,9 @@
               <span>{{ opt }}</span>
             </label>
           </div>
-          <div v-else-if="field.field_type === 'boolean'" class="flex items-center gap-2 text-sm">
-            <Switch v-model="fieldValues[field.id]" class="mt-2" />
-            <span class="mt-2">是否</span>
+          <div v-else-if="field.field_type === 'boolean'" class="flex items-center gap-3 text-sm">
+            <Switch v-model="fieldValues[field.id]" />
+            <span class="text-muted-foreground">是否</span>
           </div>
         </div>
       </div>
@@ -129,6 +141,18 @@ const toggleMultiSelect = (fieldId, option, checked) => {
   } else {
     fieldValues.value[fieldId] = current.filter((item) => item !== option);
   }
+};
+
+const shouldShowField = (field) => {
+  const rule = Array.isArray(field.visibility_rules) ? field.visibility_rules[0] : null;
+  if (!rule || !rule.depends_on) return true;
+  const depId = Number(rule.depends_on);
+  if (!depId) return true;
+  const currentValue = fieldValues.value[depId];
+  const matches = Array.isArray(currentValue)
+    ? currentValue.map(String).includes(String(rule.value))
+    : String(currentValue ?? "") === String(rule.value);
+  return rule.action === "hide" ? !matches : matches;
 };
 
 const save = async () => {

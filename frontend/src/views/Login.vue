@@ -2,9 +2,15 @@
   <div class="flex min-h-[60vh] items-center justify-center">
     <div class="w-full max-w-sm rounded-lg border bg-background p-6 shadow-sm">
       <h2 class="mb-4 text-lg font-semibold">登录系统</h2>
-      <div class="space-y-3">
-        <Input v-model="username" placeholder="用户名" />
-        <Input v-model="password" type="password" placeholder="密码" />
+      <div class="space-y-4">
+        <div class="form-field">
+          <label class="form-label">用户名</label>
+          <Input v-model="username" placeholder="用户名" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">密码</label>
+          <Input v-model="password" type="password" placeholder="密码" />
+        </div>
         <Alert v-if="error" variant="destructive">
           <AlertTitle>登录失败</AlertTitle>
           <AlertDescription>{{ error }}</AlertDescription>

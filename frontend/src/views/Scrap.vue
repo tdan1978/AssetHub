@@ -7,10 +7,16 @@
 
     <div class="card">
       <h3 class="text-sm font-semibold">发起报废申请</h3>
-      <div class="mt-3 grid gap-2 md:grid-cols-3">
-        <Input placeholder="资产 ID / SN" />
-        <Input placeholder="报废原因" />
-        <div class="flex items-center">
+      <div class="mt-3 grid gap-4 md:grid-cols-3 items-end">
+        <div class="form-field">
+          <label class="form-label">资产 ID / SN</label>
+          <Input placeholder="资产 ID / SN" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">报废原因</label>
+          <Input placeholder="报废原因" />
+        </div>
+        <div class="flex items-end">
           <Button>提交申请</Button>
         </div>
       </div>

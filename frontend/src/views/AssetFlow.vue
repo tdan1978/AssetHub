@@ -8,36 +8,57 @@
     <div class="grid gap-4 md:grid-cols-3">
       <div class="card">
         <h3 class="text-sm font-semibold">领用</h3>
-        <div class="mt-3 grid gap-2">
-          <Input v-model="checkout.asset" placeholder="资产 ID / SN" />
-          <Input v-model="checkout.user_id" placeholder="领用人 ID" />
-          <Input v-model="checkout.dept" placeholder="部门" />
+        <div class="mt-3 grid gap-3">
+          <div class="form-field">
+            <label class="form-label">资产 ID / SN</label>
+            <Input v-model="checkout.asset" placeholder="资产 ID / SN" />
+          </div>
+          <div class="form-field">
+            <label class="form-label">领用人 ID</label>
+            <Input v-model="checkout.user_id" placeholder="领用人 ID" />
+          </div>
+          <div class="form-field">
+            <label class="form-label">部门</label>
+            <Input v-model="checkout.dept" placeholder="部门" />
+          </div>
           <Button @click="submitCheckout">提交领用</Button>
         </div>
       </div>
 
       <div class="card">
         <h3 class="text-sm font-semibold">退库</h3>
-        <div class="mt-3 grid gap-2">
-          <Input v-model="checkin.asset" placeholder="资产 ID / SN" />
-          <Select v-model="checkin.damaged">
-            <SelectTrigger>
-              <SelectValue placeholder="设备状况" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="false">设备状况：完好</SelectItem>
-              <SelectItem value="true">设备状况：损坏</SelectItem>
-            </SelectContent>
-          </Select>
+        <div class="mt-3 grid gap-3">
+          <div class="form-field">
+            <label class="form-label">资产 ID / SN</label>
+            <Input v-model="checkin.asset" placeholder="资产 ID / SN" />
+          </div>
+          <div class="form-field">
+            <label class="form-label">设备状况</label>
+            <Select v-model="checkin.damaged">
+              <SelectTrigger class="w-full">
+                <SelectValue placeholder="设备状况" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="false">设备状况：完好</SelectItem>
+                <SelectItem value="true">设备状况：损坏</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
           <Button @click="submitCheckin">提交退库</Button>
         </div>
       </div>
 
       <div class="card">
         <h3 class="text-sm font-semibold">调拨</h3>
-        <div class="mt-3 grid gap-2">
-          <Input v-model="transfer.asset" placeholder="资产 ID / SN" />
-          <Input v-model="transfer.dept" placeholder="目标部门" />
+        <div class="mt-3 grid gap-3">
+          <div class="form-field">
+            <label class="form-label">资产 ID / SN</label>
+            <Input v-model="transfer.asset" placeholder="资产 ID / SN" />
+          </div>
+          <div class="form-field">
+            <label class="form-label">目标部门</label>
+            <Input v-model="transfer.dept" placeholder="目标部门" />
+          </div>
           <Button @click="submitTransfer">提交调拨</Button>
         </div>
       </div>

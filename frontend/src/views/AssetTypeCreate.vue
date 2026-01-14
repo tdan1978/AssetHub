@@ -13,10 +13,19 @@
     </div>
 
     <div class="card">
-      <div class="grid gap-3 md:grid-cols-3">
-        <Input v-model="form.name" placeholder="类型名称" />
-        <Input v-model="form.code" placeholder="类型编码" />
-        <Input v-model="form.description" placeholder="描述" />
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="form-label">类型名称</label>
+          <Input v-model="form.name" placeholder="类型名称" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">类型编码</label>
+          <Input v-model="form.code" placeholder="类型编码" />
+        </div>
+        <div class="form-field">
+          <label class="form-label">描述</label>
+          <Input v-model="form.description" placeholder="描述" />
+        </div>
       </div>
       <div class="mt-4">
         <Button @click="save">保存</Button>

@@ -1,4 +1,4 @@
-from app.routers import auth, assets, asset_fields, licenses, users, roles, stocktakes, dashboard, categories, maintenance
+from app.routers import auth, assets, asset_fields, licenses, users, roles, stocktakes, dashboard, categories, maintenance, systems, system_fields, system_field_categories, software_field_categories, license_fields
 
 __all__ = [
     "auth",
@@ -11,4 +11,9 @@ __all__ = [
     "stocktakes",
     "dashboard",
     "categories",
+    "systems",
+    "system_fields",
+    "system_field_categories",
+    "software_field_categories",
+    "license_fields",
 ]
