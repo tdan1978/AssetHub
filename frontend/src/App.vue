@@ -11,14 +11,13 @@
               <img
                 :src="logoUrl"
                 alt="AssetHub"
-                class="rounded-lg object-contain"
-                :class="isSidebarCollapsed ? 'h-7 w-7' : 'h-[40px] w-auto'"
+                class="h-[32px] w-[70px] rounded-lg object-contain"
               />
               <div class="flex flex-col justify-center">
-                <div class="text-[1.2rem] font-bold italic tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-lime-500 to-green-600">
+                <div class="text-[1.2rem] font-black italic tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-lime-500 to-green-600">
                   AssetHub
                 </div>
-                <div class="text-[0.65rem] text-muted-foreground">IT资产管理系统</div>
+                <div class="text-[0.65rem] text-muted-foreground">IT Asset Management System</div>
               </div>
             </div>
             <SidebarTrigger @click="toggleSidebar">
@@ -52,7 +51,7 @@
                       v-for="item in group.items"
                       :key="item.to"
                       :to="item.to"
-                      class="sidebar-link"
+                      class="sidebar-link text-muted-foreground hover:text-foreground"
                       :class="{ 'sidebar-link-active': isActive(item.to) }"
                     >
                       <component :is="item.icon" class="h-4 w-4" />
@@ -63,6 +62,9 @@
               </SidebarGroup>
             </nav>
           </SidebarContent>
+          <div class="border-t px-3 py-3 text-[11px] text-muted-foreground">
+            © 2026 AssetHub Contributors
+          </div>
         </Sidebar>
 
         <main class="flex-1">
@@ -71,13 +73,13 @@
               <img
                 :src="logoUrl"
                 alt="AssetHub"
-                class="h-7 w-7 rounded-lg object-contain"
+                class="h-[32px] w-[70px] rounded-lg object-contain"
               />
               <div class="flex flex-col justify-center">
                 <div class="text-[1.2rem] font-bold italic tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-lime-500 to-green-600">
                   AssetHub
                 </div>
-                <div class="text-[0.65rem] text-muted-foreground">IT资产管理系统</div>
+                <div class="text-[0.65rem] text-muted-foreground">IT Asset Management System</div>
               </div>
             </div>
             <div v-else />
@@ -153,6 +155,7 @@
           <section class="p-6">
             <router-view />
           </section>
+
 
           <Dialog v-model:open="changePasswordOpen">
             <DialogContent class="sm:max-w-[420px]">
@@ -301,19 +304,19 @@ const menuGroups = [
     ]
   },
   {
-    title: "盘点",
-    icon: ClipboardList,
-    items: [
-      { label: "盘点任务", to: "/stocktakes", icon: ClipboardCheck },
-      { label: "扫码工具", to: "/scan", icon: QrCode }
-    ]
-  },
-  {
     title: "系统资产管理",
     icon: FileSearch,
     items: [
       { label: "系统资产台账", to: "/systems", icon: ClipboardList },
       { label: "字段分类", to: "/system-field-categories", icon: ListTree }
+    ]
+  },
+  {
+    title: "盘点",
+    icon: ClipboardList,
+    items: [
+      { label: "盘点任务", to: "/stocktakes", icon: ClipboardCheck },
+      { label: "扫码工具", to: "/scan", icon: QrCode }
     ]
   },
   {

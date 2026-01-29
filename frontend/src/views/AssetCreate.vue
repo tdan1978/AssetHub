@@ -20,7 +20,7 @@
         </div>
         <div class="form-field">
           <label class="form-label">编号</label>
-          <Input v-model="form.asset_no" placeholder="编号(可选)" />
+          <Input v-model="form.asset_no" placeholder="自动生成" disabled />
         </div>
         <div class="form-field">
           <label class="form-label">名称</label>
@@ -36,6 +36,18 @@
               <SelectItem v-for="item in categories" :key="item.id" :value="item.id">
                 {{ item.name }}
               </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div class="form-field">
+          <label class="form-label">用途</label>
+          <Select v-model="form.dept">
+            <SelectTrigger class="w-full">
+              <SelectValue placeholder="选择用途" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="办公和业务">办公和业务</SelectItem>
+              <SelectItem value="数据中心">数据中心</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -105,6 +117,7 @@ const form = ref({
   name: "",
   category: "",
   category_id: null,
+  dept: "",
   status: 0
 });
 

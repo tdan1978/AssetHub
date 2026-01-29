@@ -18,8 +18,8 @@
             <Input v-model="checkout.user_id" placeholder="领用人 ID" />
           </div>
           <div class="form-field">
-            <label class="form-label">部门</label>
-            <Input v-model="checkout.dept" placeholder="部门" />
+          <label class="form-label">用途</label>
+          <Input v-model="checkout.dept" placeholder="用途" />
           </div>
           <Button @click="submitCheckout">提交领用</Button>
         </div>
@@ -56,8 +56,8 @@
             <Input v-model="transfer.asset" placeholder="资产 ID / SN" />
           </div>
           <div class="form-field">
-            <label class="form-label">目标部门</label>
-            <Input v-model="transfer.dept" placeholder="目标部门" />
+          <label class="form-label">目标用途</label>
+          <Input v-model="transfer.dept" placeholder="目标用途" />
           </div>
           <Button @click="submitTransfer">提交调拨</Button>
         </div>

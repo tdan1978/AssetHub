@@ -1,5 +1,7 @@
 # AssetHub IT资产管理系统
 
+Copyright (c) 2026 AssetHub Contributors
+
 ## 截图
 
 ![系统截图](./Screenshot.png)

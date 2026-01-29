@@ -30,11 +30,33 @@ def log_change(db: Session, asset_id: int, operator_id: int, action_type: str, c
     )
 
 
-def generate_asset_no(db: Session, prefix: str = "IT") -> str:
-    date_str = date.today().strftime("%Y%m%d")
-    base = f"{prefix}-{date_str}-"
-    count = db.query(Asset).filter(Asset.asset_no.like(f"{base}%")).count()
-    return f"{base}{count + 1:04d}"
+def generate_asset_no(db: Session, prefix: str) -> str:
+    base = f"{prefix}-"
+    candidates = db.query(Asset.asset_no).filter(Asset.asset_no.like(f"{base}%")).all()
+    max_seq = 0
+    for (asset_no,) in candidates:
+        if not asset_no or not asset_no.startswith(base):
+            continue
+        tail = asset_no.replace(base, "", 1)
+        if tail.isdigit():
+            max_seq = max(max_seq, int(tail))
+    return f"{base}{max_seq + 1:04d}"
+
+
+def resolve_category_prefix(db: Session, category_id: int | None, category_name: str | None) -> str:
+    if category_id:
+        category = db.query(Category).filter(Category.id == category_id, Category.is_deleted == False).first()
+        if category:
+            if category.code:
+                return category.code.strip().replace(" ", "").upper()
+            return f"C{category.id}"
+    if category_name:
+        category = db.query(Category).filter(Category.name == category_name, Category.is_deleted == False).first()
+        if category:
+            if category.code:
+                return category.code.strip().replace(" ", "").upper()
+            return f"C{category.id}"
+    return "ASSET"
 
 
 def normalize_columns(df: pd.DataFrame) -> pd.DataFrame:
@@ -46,7 +68,7 @@ def normalize_columns(df: pd.DataFrame) -> pd.DataFrame:
         "purchase_at": ["purchase_at", "采购日期"],
         "price": ["price", "采购原值", "价格"],
         "warranty_at": ["warranty_at", "维保截止日期", "维保期"],
-        "dept": ["dept", "部门"],
+        "dept": ["dept", "部门", "用途"],
         "location": ["location", "位置"],
         "attachment": ["attachment", "附件", "发票", "合同"],
     }
@@ -138,9 +160,8 @@ def batch_import(
             errors[idx] = "; ".join(row_errors)
             continue
 
-        asset_no = str(row.get("asset_no", "")).strip()
-        if not asset_no:
-            asset_no = generate_asset_no(db)
+        prefix = resolve_category_prefix(db, category_id, category)
+        asset_no = generate_asset_no(db, prefix)
 
         asset = Asset(
             sn=sn,
@@ -220,7 +241,10 @@ def create_asset(
     exists = db.query(Asset).filter(Asset.sn == payload.sn, Asset.is_deleted == False).first()
     if exists:
         raise HTTPException(status_code=400, detail="SN already exists")
-    asset = Asset(**payload.model_dump())
+    prefix = resolve_category_prefix(db, payload.category_id, payload.category)
+    payload_data = payload.model_dump()
+    payload_data["asset_no"] = generate_asset_no(db, prefix)
+    asset = Asset(**payload_data)
     db.add(asset)
     db.commit()
     db.refresh(asset)
@@ -240,6 +264,7 @@ def update_asset(
     if not asset:
         raise HTTPException(status_code=404, detail="Asset not found")
     data = payload.model_dump(exclude_unset=True)
+    data.pop("asset_no", None)
     for key, value in data.items():
         setattr(asset, key, value)
     db.commit()
@@ -347,6 +372,35 @@ def scrap_asset(
     asset.status = 4
     db.commit()
     log_change(db, asset.id, user.id, "SCRAP", {"field": "status", "old": 3, "new": 4})
+    db.commit()
+    db.refresh(asset)
+    return asset
+
+
+@router.post("/{asset_id}/unscrap", response_model=AssetOut)
+def unscrap_asset(
+    asset_id: int,
+    reason: str | None = Query(None),
+    db: Session = Depends(get_db),
+    user=Depends(require_role("super_admin", "asset_admin")),
+):
+    asset = db.query(Asset).filter(Asset.id == asset_id, Asset.is_deleted == False).with_for_update().first()
+    if not asset:
+        raise HTTPException(status_code=404, detail="Asset not found")
+    if asset.status not in (3, 4):
+        raise HTTPException(status_code=400, detail="Asset not in scrap state")
+    if asset.status == 4 and (not reason or not reason.strip()):
+        raise HTTPException(status_code=400, detail="Reason required for recovered scrap asset")
+    old_status = asset.status
+    asset.status = 0
+    db.commit()
+    log_change(
+        db,
+        asset.id,
+        user.id,
+        "UNSCRAP",
+        {"field": "status", "old": old_status, "new": 0, "reason": reason},
+    )
     db.commit()
     db.refresh(asset)
     return asset

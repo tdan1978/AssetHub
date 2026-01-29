@@ -11,6 +11,34 @@ from app.schemas.system_app import SystemAppCreate, SystemAppOut, SystemAppUpdat
 from app.schemas.system_field_value import SystemFieldValueIn, SystemFieldValueOut
 from app.utils.pagination import paginate
 
+
+def resolve_system_prefix(app_category: str | None) -> str:
+    if not app_category:
+        return "SYS"
+    mapping = {
+        "业务系统": "BUS",
+        "工具系统": "TOOL",
+        "中间件": "MID",
+        "内部平台": "PLAT",
+    }
+    if app_category in mapping:
+        return mapping[app_category]
+    cleaned = "".join(ch for ch in app_category if ch.isalnum()).upper()
+    return cleaned[:6] if cleaned else "SYS"
+
+
+def generate_system_code(db: Session, prefix: str) -> str:
+    base = f"{prefix}-"
+    candidates = db.query(SystemApp.app_code).filter(SystemApp.app_code.like(f"{base}%")).all()
+    max_seq = 0
+    for (code,) in candidates:
+        if not code or not code.startswith(base):
+            continue
+        tail = code.replace(base, "", 1)
+        if tail.isdigit():
+            max_seq = max(max_seq, int(tail))
+    return f"{base}{max_seq + 1:04d}"
+
 router = APIRouter(prefix="/api/v1/systems", tags=["systems"])
 
 
@@ -51,15 +79,10 @@ def create_system(
     db: Session = Depends(get_db),
     _: object = Depends(require_role("super_admin", "asset_admin")),
 ):
-    if payload.app_code:
-        exists = (
-            db.query(SystemApp)
-            .filter(SystemApp.app_code == payload.app_code, SystemApp.is_deleted == False)
-            .first()
-        )
-        if exists:
-            raise HTTPException(status_code=400, detail="System code exists")
-    item = SystemApp(**payload.model_dump())
+    prefix = resolve_system_prefix(payload.app_category)
+    payload_data = payload.model_dump()
+    payload_data["app_code"] = generate_system_code(db, prefix)
+    item = SystemApp(**payload_data)
     db.add(item)
     db.commit()
     db.refresh(item)
@@ -77,18 +100,10 @@ def update_system(
     if not item:
         raise HTTPException(status_code=404, detail="System not found")
     data = payload.model_dump(exclude_unset=True)
-    if "app_code" in data and data["app_code"]:
-        exists = (
-            db.query(SystemApp)
-            .filter(
-                SystemApp.app_code == data["app_code"],
-                SystemApp.id != system_id,
-                SystemApp.is_deleted == False,
-            )
-            .first()
-        )
-        if exists:
-            raise HTTPException(status_code=400, detail="System code exists")
+    data.pop("app_code", None)
+    if "app_category" in data and data["app_category"] != item.app_category:
+        prefix = resolve_system_prefix(data["app_category"])
+        data["app_code"] = generate_system_code(db, prefix)
     for key, value in data.items():
         setattr(item, key, value)
     db.commit()

@@ -22,7 +22,12 @@
             <label class="form-label">
               {{ field.name }} <span v-if="field.is_required">*</span>
             </label>
-            <Input v-if="field.field_type === 'text' && isBaseField(field)" v-model="form[field.field_key]" />
+            <Input
+              v-if="field.field_type === 'text' && isBaseField(field)"
+              v-model="form[field.field_key]"
+              :disabled="field.field_key === 'app_code'"
+              :placeholder="field.field_key === 'app_code' ? '自动生成' : ''"
+            />
             <Input v-else-if="field.field_type === 'text'" v-model="fieldValues[field.id]" />
             <Textarea v-else-if="field.field_type === 'textarea' && isBaseField(field)" v-model="form[field.field_key]" />
             <Textarea v-else-if="field.field_type === 'textarea'" v-model="fieldValues[field.id]" />

@@ -5,7 +5,7 @@ from pydantic import BaseModel
 
 class AssetBase(BaseModel):
     sn: str
-    asset_no: str
+    asset_no: str | None = None
     name: str
     category: str
     category_id: int | None = None
