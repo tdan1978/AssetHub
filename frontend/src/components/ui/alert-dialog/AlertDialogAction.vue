@@ -16,3 +16,4 @@ const delegatedProps = reactiveOmit(props, "class")
     <slot />
   </AlertDialogAction>
 </template>
+

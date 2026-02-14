@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
-from app.core.deps import require_role
+from app.core.deps import require_permission
 from app.models.asset import Asset
 from app.models.asset_log import AssetLog
 from app.models.maintenance import MaintenanceInfo, RepairRecord
@@ -36,7 +36,7 @@ def log_change(db: Session, asset_id: int, operator_id: int, action_type: str, c
 def list_repairs(
     status: str | None = None,
     db: Session = Depends(get_db),
-    _: object = Depends(require_role("super_admin", "asset_admin")),
+    _: object = Depends(require_permission("maintenance", "view")),
 ):
     query = db.query(RepairRecord).filter(RepairRecord.is_deleted == False)
     if status:
@@ -48,7 +48,7 @@ def list_repairs(
 def get_repair(
     repair_id: int,
     db: Session = Depends(get_db),
-    _: object = Depends(require_role("super_admin", "asset_admin")),
+    _: object = Depends(require_permission("maintenance", "view")),
 ):
     record = db.query(RepairRecord).filter(RepairRecord.id == repair_id, RepairRecord.is_deleted == False).first()
     if not record:
@@ -60,7 +60,7 @@ def get_repair(
 def create_repair(
     payload: RepairRecordCreate,
     db: Session = Depends(get_db),
-    user=Depends(require_role("super_admin", "asset_admin")),
+    user=Depends(require_permission("maintenance", "create")),
 ):
     asset = db.query(Asset).filter(Asset.id == payload.asset_id, Asset.is_deleted == False).first()
     if not asset:
@@ -80,7 +80,7 @@ def update_repair(
     repair_id: int,
     payload: RepairRecordUpdate,
     db: Session = Depends(get_db),
-    user=Depends(require_role("super_admin", "asset_admin")),
+    user=Depends(require_permission("maintenance", "update")),
 ):
     record = db.query(RepairRecord).filter(RepairRecord.id == repair_id, RepairRecord.is_deleted == False).first()
     if not record:
@@ -102,7 +102,7 @@ def update_repair(
 def delete_repair(
     repair_id: int,
     db: Session = Depends(get_db),
-    _: object = Depends(require_role("super_admin", "asset_admin")),
+    _: object = Depends(require_permission("maintenance", "update")),
 ):
     record = db.query(RepairRecord).filter(RepairRecord.id == repair_id, RepairRecord.is_deleted == False).first()
     if not record:
@@ -116,7 +116,7 @@ def delete_repair(
 def get_info(
     asset_id: int,
     db: Session = Depends(get_db),
-    _: object = Depends(require_role("super_admin", "asset_admin")),
+    _: object = Depends(require_permission("maintenance", "view")),
 ):
     item = db.query(MaintenanceInfo).filter(MaintenanceInfo.asset_id == asset_id, MaintenanceInfo.is_deleted == False).first()
     if not item:
@@ -129,7 +129,7 @@ def upsert_info(
     asset_id: int,
     payload: MaintenanceInfoUpdate,
     db: Session = Depends(get_db),
-    _: object = Depends(require_role("super_admin", "asset_admin")),
+    _: object = Depends(require_permission("maintenance", "update")),
 ):
     asset = db.query(Asset).filter(Asset.id == asset_id, Asset.is_deleted == False).first()
     if not asset:

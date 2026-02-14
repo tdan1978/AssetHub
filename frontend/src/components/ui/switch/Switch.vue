@@ -36,3 +36,4 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
     </SwitchThumb>
   </SwitchRoot>
 </template>
+

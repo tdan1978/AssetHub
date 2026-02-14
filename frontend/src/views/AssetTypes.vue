@@ -18,6 +18,7 @@
           <tr>
             <th>名称</th>
             <th>编码</th>
+            <th>范围</th>
             <th>状态</th>
             <th>操作</th>
           </tr>
@@ -26,16 +27,17 @@
           <tr v-for="item in categories" :key="item.id">
             <td>{{ item.name }}</td>
             <td>{{ item.code || '-' }}</td>
+            <td>{{ scopeLabels[item.usage_scope || "all"] }}</td>
             <td>{{ item.is_active ? '启用' : '停用' }}</td>
             <td>
               <div class="flex gap-2">
                 <RouterLink :to="`/asset-types/${item.id}/fields`">
-                  <Button size="sm" variant="outline">字段</Button>
+                  <Button size="sm" variant="default">字段</Button>
                 </RouterLink>
                 <RouterLink :to="`/asset-types/${item.id}/edit`">
                   <Button size="sm" variant="outline">编辑</Button>
                 </RouterLink>
-                <Button size="sm" variant="outline" @click="askDelete(item.id)">删除</Button>
+                <Button size="sm" variant="destructive" @click="askDelete(item.id)">删除</Button>
               </div>
             </td>
           </tr>
@@ -76,6 +78,11 @@ import {
 const categories = ref([]);
 const confirmOpen = ref(false);
 const pendingId = ref(null);
+const scopeLabels = {
+  all: "通用",
+  office: "办公资产",
+  datacenter: "数据中心资产"
+};
 
 const loadCategories = async () => {
   const { data } = await api.get("/categories");
@@ -99,3 +106,6 @@ onMounted(loadCategories);
 </script>
 
 <style scoped></style>
+
+
+

@@ -8,10 +8,10 @@
         </div>
         <div class="flex gap-2">
           <RouterLink to="/maintenance/repairs/new">
-            <Button variant="outline">新增报修</Button>
+            <Button>新增报修</Button>
           </RouterLink>
           <RouterLink to="/maintenance/info">
-            <Button variant="outline">维保信息</Button>
+            <Button variant="secondary">维保信息</Button>
           </RouterLink>
         </div>
       </div>
@@ -42,7 +42,7 @@
                 <RouterLink :to="`/maintenance/repairs/${item.id}/edit`">
                   <Button size="sm" variant="outline">编辑</Button>
                 </RouterLink>
-                <Button size="sm" variant="outline" @click="askDelete(item.id)">删除</Button>
+                <Button size="sm" variant="destructive" @click="askDelete(item.id)">删除</Button>
               </div>
             </td>
           </tr>
@@ -104,3 +104,6 @@ const confirmDelete = async () => {
 
 onMounted(loadRepairs);
 </script>
+
+
+

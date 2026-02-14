@@ -21,5 +21,6 @@ class SystemApp(Base, TimestampMixin):
     biz_owner = Column(String(100), nullable=True)
     tech_owner = Column(String(100), nullable=True)
     ops_owner = Column(String(100), nullable=True)
+    ops_owner_b = Column(String(100), nullable=True)
     sec_level = Column(String(100), nullable=True)
     is_deleted = Column(Boolean, default=False)

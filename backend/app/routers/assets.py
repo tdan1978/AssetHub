@@ -7,7 +7,7 @@ from sqlalchemy import or_
 import pandas as pd
 
 from app.core.database import get_db
-from app.core.deps import get_current_user, require_role
+from app.core.deps import require_permission, require_any_permission
 from app.models.asset import Asset
 from app.models.asset_log import AssetLog
 from app.models.category import Category
@@ -40,7 +40,7 @@ def generate_asset_no(db: Session, prefix: str) -> str:
         tail = asset_no.replace(base, "", 1)
         if tail.isdigit():
             max_seq = max(max_seq, int(tail))
-    return f"{base}{max_seq + 1:04d}"
+    return f"{base}{max_seq + 1:010d}"
 
 
 def resolve_category_prefix(db: Session, category_id: int | None, category_name: str | None) -> str:
@@ -59,6 +59,34 @@ def resolve_category_prefix(db: Session, category_id: int | None, category_name:
     return "ASSET"
 
 
+def ensure_asset_scope(db: Session, asset: Asset, user):
+    scopes = get_asset_scopes(user)
+    if not scopes:
+        return
+    category = db.query(Category).filter(Category.id == asset.category_id).first()
+    if not category or category.usage_scope not in scopes:
+        raise HTTPException(status_code=403, detail="Forbidden")
+
+
+def get_user_role_codes(user) -> set[str]:
+    codes = set()
+    if user.role:
+        codes.add(user.role.code)
+    if user.roles:
+        codes.update([role.code for role in user.roles])
+    return codes
+
+
+def get_asset_scopes(user) -> set[str]:
+    codes = get_user_role_codes(user)
+    scopes = set()
+    if "office_asset_admin" in codes:
+        scopes.add("office")
+    if "datacenter_asset_admin" in codes:
+        scopes.add("datacenter")
+    return scopes
+
+
 def normalize_columns(df: pd.DataFrame) -> pd.DataFrame:
     aliases = {
         "sn": ["sn", "SN", "序列号"],
@@ -68,7 +96,6 @@ def normalize_columns(df: pd.DataFrame) -> pd.DataFrame:
         "purchase_at": ["purchase_at", "采购日期"],
         "price": ["price", "采购原值", "价格"],
         "warranty_at": ["warranty_at", "维保截止日期", "维保期"],
-        "dept": ["dept", "部门", "用途"],
         "location": ["location", "位置"],
         "attachment": ["attachment", "附件", "发票", "合同"],
     }
@@ -86,7 +113,14 @@ def normalize_columns(df: pd.DataFrame) -> pd.DataFrame:
 def batch_import(
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
-    user=Depends(require_role("super_admin", "asset_admin")),
+    user=Depends(
+        require_any_permission(
+            [
+                ("office_hardware_assets", "create"),
+                ("datacenter_hardware_assets", "create"),
+            ]
+        )
+    ),
 ):
     if not file.filename.lower().endswith((".xlsx", ".xls")):
         raise HTTPException(status_code=400, detail="Invalid file type")
@@ -170,7 +204,6 @@ def batch_import(
             category=category,
             category_id=category_id,
             status=0,
-            dept=str(row.get("dept", "")).strip() or None,
             location=str(row.get("location", "")).strip() or None,
             price=price_val,
             purchase_at=purchase_at,
@@ -207,15 +240,44 @@ def list_assets(
     size: int = 20,
     q: str | None = None,
     status: int | None = None,
+    scope: str | None = None,
     db: Session = Depends(get_db),
-    _: object = Depends(get_current_user),
+    user=Depends(
+        require_any_permission(
+            [
+                ("office_hardware_assets", "view"),
+                ("datacenter_hardware_assets", "view"),
+            ]
+        )
+    ),
 ):
     query = db.query(Asset).filter(Asset.is_deleted == False)
+    joined_category = False
+    role_codes = get_user_role_codes(user)
+    scopes = get_asset_scopes(user)
+    if scope in ("office", "datacenter"):
+        query = query.join(Category, Asset.category_id == Category.id).filter(Category.usage_scope == scope)
+        joined_category = True
     if q:
         like = f"%{q}%"
         query = query.filter(or_(Asset.sn.like(like), Asset.name.like(like), Asset.asset_no.like(like)))
     if status is not None:
         query = query.filter(Asset.status == status)
+    if scopes:
+        if scope and scope not in scopes:
+            raise HTTPException(status_code=403, detail="Forbidden")
+        if len(scopes) == 1:
+            if not joined_category:
+                query = query.join(Category, Asset.category_id == Category.id)
+                joined_category = True
+            query = query.filter(Category.usage_scope.in_(scopes))
+    elif "employee" in role_codes:
+        query = query.filter(Asset.user_id == user.id)
+    elif "auditor" in role_codes and scope in ("office", "datacenter"):
+        if not joined_category:
+            query = query.join(Category, Asset.category_id == Category.id)
+            joined_category = True
+        query = query.filter(Category.usage_scope == scope)
     total, items = paginate(query.order_by(Asset.id.desc()), page, size)
     return Page(total=total, items=items)
 
@@ -224,11 +286,26 @@ def list_assets(
 def get_asset(
     asset_id: int,
     db: Session = Depends(get_db),
-    _: object = Depends(get_current_user),
+    user=Depends(
+        require_any_permission(
+            [
+                ("office_hardware_assets", "view"),
+                ("datacenter_hardware_assets", "view"),
+            ]
+        )
+    ),
 ):
     asset = db.query(Asset).filter(Asset.id == asset_id, Asset.is_deleted == False).first()
     if not asset:
         raise HTTPException(status_code=404, detail="Asset not found")
+    role_codes = get_user_role_codes(user)
+    scopes = get_asset_scopes(user)
+    if scopes:
+        category = db.query(Category).filter(Category.id == asset.category_id).first()
+        if not category or category.usage_scope not in scopes:
+            raise HTTPException(status_code=403, detail="Forbidden")
+    elif "employee" in role_codes and asset.user_id != user.id:
+        raise HTTPException(status_code=403, detail="Forbidden")
     return asset
 
 
@@ -236,12 +313,24 @@ def get_asset(
 def create_asset(
     payload: AssetCreate,
     db: Session = Depends(get_db),
-    user=Depends(require_role("super_admin", "asset_admin")),
+    user=Depends(
+        require_any_permission(
+            [
+                ("office_hardware_assets", "create"),
+                ("datacenter_hardware_assets", "create"),
+            ]
+        )
+    ),
 ):
     exists = db.query(Asset).filter(Asset.sn == payload.sn, Asset.is_deleted == False).first()
     if exists:
         raise HTTPException(status_code=400, detail="SN already exists")
     prefix = resolve_category_prefix(db, payload.category_id, payload.category)
+    scopes = get_asset_scopes(user)
+    if scopes:
+        category = db.query(Category).filter(Category.id == payload.category_id, Category.is_deleted == False).first()
+        if not category or category.usage_scope not in scopes:
+            raise HTTPException(status_code=403, detail="Forbidden")
     payload_data = payload.model_dump()
     payload_data["asset_no"] = generate_asset_no(db, prefix)
     asset = Asset(**payload_data)
@@ -258,12 +347,30 @@ def update_asset(
     asset_id: int,
     payload: AssetUpdate,
     db: Session = Depends(get_db),
-    user=Depends(require_role("super_admin", "asset_admin")),
+    user=Depends(
+        require_any_permission(
+            [
+                ("office_hardware_assets", "update"),
+                ("datacenter_hardware_assets", "update"),
+            ]
+        )
+    ),
 ):
     asset = db.query(Asset).filter(Asset.id == asset_id, Asset.is_deleted == False).first()
     if not asset:
         raise HTTPException(status_code=404, detail="Asset not found")
+    scopes = get_asset_scopes(user)
+    if scopes:
+        category = db.query(Category).filter(Category.id == asset.category_id).first()
+        if not category or category.usage_scope not in scopes:
+            raise HTTPException(status_code=403, detail="Forbidden")
     data = payload.model_dump(exclude_unset=True)
+    if "category_id" in data and data["category_id"] is not None:
+        category = db.query(Category).filter(Category.id == data["category_id"], Category.is_deleted == False).first()
+        if not category:
+            raise HTTPException(status_code=400, detail="Category not found")
+        if scopes and category.usage_scope not in scopes:
+            raise HTTPException(status_code=403, detail="Forbidden")
     data.pop("asset_no", None)
     for key, value in data.items():
         setattr(asset, key, value)
@@ -277,19 +384,28 @@ def update_asset(
 @router.post("/{asset_id}/checkout", response_model=AssetOut)
 def checkout_asset(
     asset_id: int,
-    user_id: int = Query(...),
-    dept: str | None = Query(None),
+    user_id: int | None = Query(None),
     db: Session = Depends(get_db),
-    user=Depends(require_role("super_admin", "asset_admin")),
+    user=Depends(
+        require_any_permission(
+            [
+                ("office_hardware_assets", "update"),
+                ("datacenter_hardware_assets", "update"),
+            ]
+        )
+    ),
 ):
     asset = db.query(Asset).filter(Asset.id == asset_id, Asset.is_deleted == False).with_for_update().first()
     if not asset:
         raise HTTPException(status_code=404, detail="Asset not found")
     if asset.status != 0:
         raise HTTPException(status_code=400, detail="Asset not idle")
+    ensure_asset_scope(db, asset, user)
+    category = db.query(Category).filter(Category.id == asset.category_id).first()
+    if category and category.usage_scope == "office" and not user_id:
+        raise HTTPException(status_code=400, detail="User required for office assets")
     asset.status = 1
-    asset.user_id = user_id
-    asset.dept = dept
+    asset.user_id = user_id if category and category.usage_scope == "office" else None
     db.commit()
     log_change(db, asset.id, user.id, "OUT", {"field": "status", "old": 0, "new": 1})
     db.commit()
@@ -302,13 +418,21 @@ def checkin_asset(
     asset_id: int,
     damaged: bool = False,
     db: Session = Depends(get_db),
-    user=Depends(require_role("super_admin", "asset_admin")),
+    user=Depends(
+        require_any_permission(
+            [
+                ("office_hardware_assets", "update"),
+                ("datacenter_hardware_assets", "update"),
+            ]
+        )
+    ),
 ):
     asset = db.query(Asset).filter(Asset.id == asset_id, Asset.is_deleted == False).with_for_update().first()
     if not asset:
         raise HTTPException(status_code=404, detail="Asset not found")
     if asset.status != 1:
         raise HTTPException(status_code=400, detail="Asset not in use")
+    ensure_asset_scope(db, asset, user)
     asset.status = 2 if damaged else 0
     asset.user_id = None
     db.commit()
@@ -321,17 +445,22 @@ def checkin_asset(
 @router.post("/{asset_id}/transfer", response_model=AssetOut)
 def transfer_asset(
     asset_id: int,
-    dept: str = Query(...),
     db: Session = Depends(get_db),
-    user=Depends(require_role("super_admin", "asset_admin")),
+    user=Depends(
+        require_any_permission(
+            [
+                ("office_hardware_assets", "update"),
+                ("datacenter_hardware_assets", "update"),
+            ]
+        )
+    ),
 ):
     asset = db.query(Asset).filter(Asset.id == asset_id, Asset.is_deleted == False).with_for_update().first()
     if not asset:
         raise HTTPException(status_code=404, detail="Asset not found")
-    old_dept = asset.dept
-    asset.dept = dept
+    ensure_asset_scope(db, asset, user)
     db.commit()
-    log_change(db, asset.id, user.id, "TRANSFER", {"field": "dept", "old": old_dept, "new": dept})
+    log_change(db, asset.id, user.id, "TRANSFER", {"field": "transfer", "old": None, "new": None})
     db.commit()
     db.refresh(asset)
     return asset
@@ -341,11 +470,12 @@ def transfer_asset(
 def discard_asset(
     asset_id: int,
     db: Session = Depends(get_db),
-    user=Depends(require_role("super_admin", "asset_admin")),
+    user=Depends(require_permission("scrap", "update")),
 ):
     asset = db.query(Asset).filter(Asset.id == asset_id, Asset.is_deleted == False).with_for_update().first()
     if not asset:
         raise HTTPException(status_code=404, detail="Asset not found")
+    ensure_asset_scope(db, asset, user)
     if asset.status == 1:
         raise HTTPException(status_code=400, detail="Cannot discard in-use asset")
     if asset.status not in (0, 2, 3):
@@ -362,11 +492,12 @@ def discard_asset(
 def scrap_asset(
     asset_id: int,
     db: Session = Depends(get_db),
-    user=Depends(require_role("super_admin")),
+    user=Depends(require_permission("scrap", "update")),
 ):
     asset = db.query(Asset).filter(Asset.id == asset_id, Asset.is_deleted == False).with_for_update().first()
     if not asset:
         raise HTTPException(status_code=404, detail="Asset not found")
+    ensure_asset_scope(db, asset, user)
     if asset.status != 3:
         raise HTTPException(status_code=400, detail="Asset not pending scrap")
     asset.status = 4
@@ -382,11 +513,12 @@ def unscrap_asset(
     asset_id: int,
     reason: str | None = Query(None),
     db: Session = Depends(get_db),
-    user=Depends(require_role("super_admin", "asset_admin")),
+    user=Depends(require_permission("scrap", "update")),
 ):
     asset = db.query(Asset).filter(Asset.id == asset_id, Asset.is_deleted == False).with_for_update().first()
     if not asset:
         raise HTTPException(status_code=404, detail="Asset not found")
+    ensure_asset_scope(db, asset, user)
     if asset.status not in (3, 4):
         raise HTTPException(status_code=400, detail="Asset not in scrap state")
     if asset.status == 4 and (not reason or not reason.strip()):
@@ -410,7 +542,14 @@ def unscrap_asset(
 def delete_asset(
     asset_id: int,
     db: Session = Depends(get_db),
-    user=Depends(require_role("super_admin")),
+    user=Depends(
+        require_any_permission(
+            [
+                ("office_hardware_assets", "delete"),
+                ("datacenter_hardware_assets", "delete"),
+            ]
+        )
+    ),
 ):
     asset = db.query(Asset).filter(Asset.id == asset_id, Asset.is_deleted == False).first()
     if not asset:

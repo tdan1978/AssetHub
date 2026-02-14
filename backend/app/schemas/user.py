@@ -1,11 +1,15 @@
 from pydantic import BaseModel
 
+from app.schemas.role import RoleOut
+
 
 class UserBase(BaseModel):
     username: str
     full_name: str
-    role_id: int
     dept: str | None = None
+    phone: str | None = None
+    wecom_name: str | None = None
+    role_ids: list[int]
 
 
 class UserCreate(UserBase):
@@ -14,8 +18,10 @@ class UserCreate(UserBase):
 
 class UserUpdate(BaseModel):
     full_name: str | None = None
-    role_id: int | None = None
     dept: str | None = None
+    phone: str | None = None
+    wecom_name: str | None = None
+    role_ids: list[int] | None = None
     is_active: bool | None = None
     password: str | None = None
 
@@ -23,6 +29,7 @@ class UserUpdate(BaseModel):
 class UserOut(UserBase):
     id: int
     is_active: bool
+    roles: list[RoleOut] = []
 
     class Config:
         from_attributes = True

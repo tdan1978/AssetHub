@@ -12,3 +12,4 @@ export { default as CalendarNextButton } from "./CalendarNextButton.vue"
 export { default as CalendarPrevButton } from "./CalendarPrevButton.vue"
 
 export type LayoutTypes = "month-and-year" | "month-only" | "year-only" | undefined
+

@@ -17,3 +17,4 @@ const forwarded = useForwardPropsEmits(props, emits)
     <slot />
   </DrawerRoot>
 </template>
+

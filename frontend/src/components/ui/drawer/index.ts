@@ -6,3 +6,4 @@ export { default as DrawerHeader } from "./DrawerHeader.vue"
 export { default as DrawerOverlay } from "./DrawerOverlay.vue"
 export { default as DrawerTitle } from "./DrawerTitle.vue"
 export { DrawerClose, DrawerPortal, DrawerTrigger } from "vaul-vue"
+

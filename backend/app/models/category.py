@@ -12,6 +12,7 @@ class Category(Base, TimestampMixin):
     name = Column(String(100), unique=True, nullable=False)
     code = Column(String(50), unique=True, nullable=True)
     description = Column(String(200), nullable=True)
+    usage_scope = Column(String(20), nullable=True)
     is_active = Column(Boolean, default=True)
     is_deleted = Column(Boolean, default=False)
 

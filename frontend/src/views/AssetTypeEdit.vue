@@ -23,6 +23,19 @@
           <Input v-model="form.code" placeholder="类型编码" />
         </div>
         <div class="form-field">
+          <label class="form-label">适用范围</label>
+          <Select v-model="form.usage_scope">
+            <SelectTrigger class="w-full">
+              <SelectValue placeholder="选择范围" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">通用</SelectItem>
+              <SelectItem value="office">办公资产</SelectItem>
+              <SelectItem value="datacenter">数据中心资产</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div class="form-field">
           <label class="form-label">描述</label>
           <Input v-model="form.description" placeholder="描述" />
         </div>
@@ -40,24 +53,29 @@ import { useRoute, useRouter } from "vue-router";
 import api from "../api/client";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 
 const route = useRoute();
 const router = useRouter();
 const categoryId = Number(route.params.id);
-const form = ref({ name: "", code: "", description: "", is_active: true });
+const form = ref({ name: "", code: "", description: "", usage_scope: "office", is_active: true });
 
 const load = async () => {
   const { data } = await api.get("/categories");
   const item = data.find((c) => c.id === categoryId);
   if (item) {
-    form.value = { ...item };
+    form.value = { ...item, usage_scope: item.usage_scope || "all" };
   }
 };
 
 const save = async () => {
-  await api.put(`/categories/${categoryId}`, form.value);
+  const payload = { ...form.value, usage_scope: form.value.usage_scope === "all" ? null : form.value.usage_scope };
+  await api.put(`/categories/${categoryId}`, payload);
   router.push("/asset-types");
 };
 
 onMounted(load);
 </script>
+
+
+

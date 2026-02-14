@@ -1,11 +1,12 @@
 <template>
   <div class="theme-green min-h-screen bg-muted/40">
+    <Toaster />
     <div class="theme-container">
-      <div v-if="isLogin" class="p-6">
+      <div v-if="isLogin" class="p-0">
         <router-view />
       </div>
-      <div v-else class="flex">
-        <Sidebar class="hidden md:flex" :collapsed="isSidebarCollapsed">
+      <div v-else class="flex h-screen overflow-hidden">
+        <Sidebar class="hidden md:flex h-screen overflow-y-auto" :collapsed="isSidebarCollapsed">
           <SidebarHeader>
             <div v-if="!isSidebarCollapsed" class="flex items-center gap-3">
               <img
@@ -26,8 +27,7 @@
           </SidebarHeader>
           <SidebarContent>
             <nav class="space-y-3">
-              <SidebarGroup v-for="group in menuGroups" :key="group.title">
-                <SidebarGroupLabel v-if="!isSidebarCollapsed">{{ group.title }}</SidebarGroupLabel>
+              <SidebarGroup v-for="group in visibleMenuGroups" :key="group.title">
                 <SidebarMenu>
                   <SidebarMenuItem>
                     <Button
@@ -51,11 +51,12 @@
                       v-for="item in group.items"
                       :key="item.to"
                       :to="item.to"
-                      class="sidebar-link text-muted-foreground hover:text-foreground"
-                      :class="{ 'sidebar-link-active': isActive(item.to) }"
+                      class="sidebar-link sidebar-link-sub hover:text-foreground"
+                      :class="[{ 'sidebar-link-active': isActive(item.to) }, { 'sidebar-link-demo': item.demo }]"
                     >
                       <component :is="item.icon" class="h-4 w-4" />
-                      <span class="text-sm">{{ item.label }}</span>
+                      <span class="sidebar-link-text">{{ item.label }}</span>
+                      <span v-if="item.demo" class="sidebar-demo-badge">demo</span>
                     </RouterLink>
                   </div>
                 </SidebarMenu>
@@ -67,8 +68,8 @@
           </div>
         </Sidebar>
 
-        <main class="flex-1">
-          <header class="flex items-center justify-between border-b bg-background px-6 py-4">
+        <main class="flex-1 flex flex-col h-screen overflow-hidden">
+          <header class="sticky top-0 z-10 flex items-center justify-between border-b bg-background px-6 py-4">
             <div v-if="isSidebarCollapsed" class="flex items-center gap-3">
               <img
                 :src="logoUrl"
@@ -84,7 +85,7 @@
             </div>
             <div v-else />
             <div class="flex items-center gap-2">
-              <DropdownMenu v-model:open="notificationOpen">
+              <DropdownMenu v-if="canViewNotifications" v-model:open="notificationOpen">
                 <DropdownMenuTrigger as-child>
                   <Button variant="ghost" class="relative h-9 w-9 p-0">
                     <Bell class="h-4 w-4" />
@@ -140,7 +141,7 @@
                       <AvatarImage :src="avatarUrl" alt="" />
                       <AvatarFallback>{{ userInitial }}</AvatarFallback>
                     </Avatar>
-                    <span class="text-sm font-medium text-foreground">{{ auth.username || "未登录" }}</span>
+                    <span class="text-sm font-medium text-foreground">{{ auth.fullName || auth.username || "未登录" }}</span>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" class="w-40">
@@ -152,7 +153,7 @@
             </div>
           </header>
 
-          <section class="p-6">
+          <section class="flex-1 overflow-y-auto p-6">
             <router-view />
           </section>
 
@@ -221,11 +222,11 @@ import { Alert, AlertDescription, AlertTitle } from "./components/ui/alert";
 import { Avatar, AvatarFallback, AvatarImage } from "./components/ui/avatar";
 import { Button } from "./components/ui/button";
 import { Spinner } from "./components/ui/spinner";
+import { Toaster } from "./components/ui/sonner";
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuItem,
@@ -251,21 +252,27 @@ import {
   ArrowLeftRight,
   Bell,
   Boxes,
+  ChevronDown,
   ClipboardCheck,
   ClipboardList,
   FileBarChart,
   FileSearch,
   Gauge,
+  Database,
   KeyRound,
   LayoutDashboard,
   ListTree,
+  Monitor,
   PanelLeft,
   QrCode,
+  Server,
   Settings,
   Shield,
   Trash2,
   Upload,
+  UserCog,
   Users,
+  UsersRound,
   Wrench,
   Package
 } from "lucide-vue-next";
@@ -274,64 +281,115 @@ const route = useRoute();
 const router = useRouter();
 const auth = useAuthStore();
 const isLogin = computed(() => route.path === "/login");
+const roleCode = computed(() => auth.roleCode || localStorage.getItem("roleCode") || "");
+const permissionSet = computed(() => new Set(auth.permissions || []));
+const hasPermission = (resource, action = "view") => {
+  if (!resource) return true;
+  if (!auth.permissionsLoaded && auth.token) return true;
+  if (roleCode.value === "super_admin") return true;
+  return permissionSet.value.has(`${resource}:${action}`);
+};
+const hasAnyPermission = (items = []) => items.some((item) => hasPermission(item.resource, item.action || "view"));
+const hasMenuPermission = (permission) => {
+  if (!permission) return true;
+  if (permission.any) return hasAnyPermission(permission.any);
+  return hasPermission(permission.resource, permission.action || "view");
+};
+const canViewNotifications = computed(() => auth.permissionsLoaded && hasPermission("notifications", "view"));
 
 const menuGroups = [
   {
     title: "总览",
     icon: Gauge,
     items: [
-      { label: "仪表盘", to: "/", icon: LayoutDashboard }
+      { label: "仪表盘", to: "/", icon: LayoutDashboard, permission: { resource: "dashboard", action: "view" } }
     ]
   },
   {
     title: "硬件资产管理",
     icon: Boxes,
     items: [
-      { label: "资产台账", to: "/assets", icon: Package },
-      { label: "资产类型/字段", to: "/asset-types", icon: ListTree },
-      { label: "批量导入", to: "/assets/import", icon: Upload },
-      { label: "领用/退库/调拨", to: "/assets/flow", icon: ArrowLeftRight },
-      { label: "维保与报修", to: "/maintenance", icon: Wrench },
-      { label: "报废管理", to: "/scrap", icon: Trash2 }
+  { label: "办公资产台账", to: "/assets/office", icon: Monitor, permission: { resource: "office_hardware_assets", action: "view" } },
+  { label: "数据中心资产台账", to: "/assets/datacenter", icon: Server, permission: { resource: "datacenter_hardware_assets", action: "view" } },
+      { label: "资产类型/字段", to: "/asset-types", icon: ListTree, permission: { resource: "asset_types", action: "view" } },
+      {
+        label: "批量导入",
+        to: "/assets/import",
+        icon: Upload,
+        demo: true,
+        permission: {
+          any: [
+            { resource: "office_hardware_assets", action: "create" },
+            { resource: "datacenter_hardware_assets", action: "create" }
+          ]
+        }
+      },
+      {
+        label: "领用/退库/调拨",
+        to: "/assets/flow",
+        icon: ArrowLeftRight,
+        demo: true,
+        permission: {
+          any: [
+            { resource: "office_hardware_assets", action: "update" },
+            { resource: "datacenter_hardware_assets", action: "update" }
+          ]
+        }
+      },
+      { label: "维保与报修", to: "/maintenance", icon: Wrench, demo: true, permission: { resource: "maintenance", action: "view" } },
+      { label: "报废管理", to: "/scrap", icon: Trash2, demo: true, permission: { resource: "scrap", action: "view" } }
     ]
   },
   {
     title: "软件资产",
     icon: KeyRound,
     items: [
-      { label: "软件资产台账", to: "/licenses", icon: KeyRound },
-      { label: "字段分类", to: "/software-field-categories", icon: ListTree }
+      { label: "软件资产台账", to: "/licenses", icon: KeyRound, permission: { resource: "software_assets", action: "view" } },
+      { label: "字段分类", to: "/software-field-categories", icon: ListTree, permission: { resource: "software_fields", action: "view" } }
     ]
   },
   {
     title: "系统资产管理",
     icon: FileSearch,
     items: [
-      { label: "系统资产台账", to: "/systems", icon: ClipboardList },
-      { label: "字段分类", to: "/system-field-categories", icon: ListTree }
+      { label: "系统资产台账", to: "/systems", icon: ClipboardList, permission: { resource: "system_assets", action: "view" } },
+      { label: "聚合拓扑", to: "/systems/topology", icon: Package, permission: { resource: "system_assets", action: "view" } },
+      { label: "字段分类", to: "/system-field-categories", icon: ListTree, permission: { resource: "system_fields", action: "view" } }
     ]
   },
   {
     title: "盘点",
     icon: ClipboardList,
     items: [
-      { label: "盘点任务", to: "/stocktakes", icon: ClipboardCheck },
-      { label: "扫码工具", to: "/scan", icon: QrCode }
+      { label: "盘点任务", to: "/stocktakes", icon: ClipboardCheck, demo: true, permission: { resource: "stocktakes", action: "view" } },
+      { label: "扫码工具", to: "/scan", icon: QrCode, demo: true, permission: { resource: "scan", action: "view" } }
     ]
   },
   {
     title: "系统",
     icon: Settings,
     items: [
-      { label: "系统消息", to: "/notifications", icon: Bell },
-      { label: "用户管理", to: "/users", icon: Users },
-      { label: "角色权限", to: "/roles", icon: Shield },
-      { label: "操作审计", to: "/logs", icon: FileSearch },
-      { label: "财务报表", to: "/reports", icon: FileBarChart },
-      { label: "系统设置", to: "/settings", icon: Settings }
+      { label: "系统消息", to: "/notifications", icon: Bell, permission: { resource: "notifications", action: "view" } },
+      { label: "部门管理", to: "/departments", icon: ListTree, permission: { resource: "departments", action: "view" } },
+      { label: "人员管理", to: "/people", icon: UsersRound, permission: { resource: "people", action: "view" } },
+      { label: "用户管理", to: "/users", icon: UserCog, permission: { resource: "users", action: "view" } },
+      { label: "角色权限", to: "/roles", icon: Shield, permission: { resource: "roles", action: "view" } },
+      { label: "数据源管理", to: "/dictionaries", icon: Database, permission: { resource: "dictionaries", action: "view" } },
+      { label: "操作审计", to: "/logs", icon: FileSearch, demo: true, permission: { resource: "logs", action: "view" } },
+      { label: "财务报表", to: "/reports", icon: FileBarChart, demo: true, permission: { resource: "reports", action: "view" } },
+      { label: "系统设置", to: "/settings", icon: Settings, demo: true, permission: { resource: "settings", action: "view" } }
     ]
   }
 ];
+
+const visibleMenuGroups = computed(() => {
+  return menuGroups
+    .map((group) => {
+      const items = group.items.filter((item) => hasMenuPermission(item.permission));
+      return { ...group, items };
+    })
+    .filter((group) => group.items.length);
+});
 
 const openGroups = ref([]);
 const isSidebarCollapsed = ref(false);
@@ -362,24 +420,52 @@ const isActive = (to) => {
   if (to === "/") {
     return route.path === "/";
   }
+  if (route.path.startsWith("/assets/office")) {
+    return to === "/assets/office";
+  }
+  if (route.path.startsWith("/assets/datacenter")) {
+    return to === "/assets/datacenter";
+  }
+  if (route.path.startsWith("/assets/import") || route.path.startsWith("/assets/flow")) {
+    return route.path.startsWith(to);
+  }
+  if (route.path.startsWith("/assets/")) {
+    if (to === "/assets/office" || to === "/assets/datacenter") {
+      const scope = localStorage.getItem("assetDeptScope") || "";
+      if (to === "/assets/datacenter") {
+        return scope === "数据中心";
+      }
+      return scope !== "数据中心";
+    }
+    return false;
+  }
+  if (route.path.startsWith("/systems/topology")) {
+    return to === "/systems/topology";
+  }
   return route.path.startsWith(to);
 };
 
-const isGroupOpen = (title) => openGroups.value.includes(title);
+const isGroupOpen = (title) => {
+  if (openGroups.value.includes(title)) return true;
+  const prefixes = groupRouteMap[title] || [];
+  return prefixes.some((prefix) => {
+    if (prefix === "/") {
+      return route.path === "/";
+    }
+    return route.path.startsWith(prefix);
+  });
+};
 
 const toggleGroup = (title) => {
   if (isGroupOpen(title)) {
-    openGroups.value = openGroups.value.filter((item) => item !== title);
+    openGroups.value = [];
   } else {
-    openGroups.value = [...openGroups.value, title];
+    openGroups.value = [title];
   }
 };
 
 const toggleSidebar = () => {
   isSidebarCollapsed.value = !isSidebarCollapsed.value;
-  if (isSidebarCollapsed.value) {
-    openGroups.value = [];
-  }
 };
 
 const resetPasswordForm = () => {
@@ -396,16 +482,38 @@ watch(changePasswordOpen, (open) => {
   }
 });
 
-watch(
-  () => route.path,
-  () => {
-    if (isSidebarCollapsed.value) {
-      openGroups.value = [];
-    }
+const groupRouteMap = {
+  "总览": ["/"],
+  "硬件资产管理": ["/assets", "/asset-types", "/maintenance", "/scrap"],
+  "软件资产": ["/licenses", "/software-field-categories"],
+  "系统资产管理": ["/systems", "/system-field-categories"],
+  "盘点": ["/stocktakes", "/scan"],
+  "系统": ["/notifications", "/departments", "/people", "/users", "/roles", "/logs", "/reports", "/settings"]
+};
+
+const ensureActiveGroupOpen = () => {
+  const path = route.path;
+  const match = visibleMenuGroups.value.find((group) => {
+    const prefixes = groupRouteMap[group.title] || [];
+    return prefixes.some((prefix) => {
+      if (prefix === "/") {
+        return path === "/";
+      }
+      return path.startsWith(prefix);
+    });
+  });
+  if (!match) return;
+  if (!openGroups.value.includes(match.title)) {
+    openGroups.value = [match.title];
   }
-);
+};
 
 const loadNotifications = async () => {
+  if (!canViewNotifications.value) {
+    notifications.value = [];
+    notificationsLoading.value = false;
+    return;
+  }
   notificationsLoading.value = true;
   try {
     const { data } = await api.get("/notifications");
@@ -420,6 +528,21 @@ watch(notificationOpen, (open) => {
     loadNotifications();
   }
 });
+
+watch(isSidebarCollapsed, (value) => {
+  localStorage.setItem("assethub_sidebar_collapsed", value ? "1" : "0");
+});
+
+watch(openGroups, (value) => {
+  localStorage.setItem("assethub_sidebar_open_groups", JSON.stringify(value));
+});
+
+watch(
+  () => route.path,
+  () => {
+    ensureActiveGroupOpen();
+  }
+);
 
 const visibleNotifications = computed(() =>
   notifications.value.filter((item) => !readNotificationIds.value.has(item.id))
@@ -440,6 +563,26 @@ const markRead = (id) => {
 };
 
 onMounted(() => {
+  document.documentElement.classList.add("theme-green");
+  if (auth.token && !auth.permissionsLoaded) {
+    auth.loadPermissions().catch(() => {});
+  }
+  if (!localStorage.getItem("roleCode") && auth.roleCode) {
+    localStorage.setItem("roleCode", auth.roleCode);
+  }
+  const storedCollapsed = localStorage.getItem("assethub_sidebar_collapsed");
+  if (storedCollapsed !== null) {
+    isSidebarCollapsed.value = storedCollapsed === "1";
+  }
+  const storedGroups = localStorage.getItem("assethub_sidebar_open_groups");
+  if (storedGroups) {
+    try {
+      openGroups.value = JSON.parse(storedGroups) || [];
+    } catch {
+      openGroups.value = [];
+    }
+  }
+  ensureActiveGroupOpen();
   const cached = localStorage.getItem("assethub_read_notifications");
   if (cached) {
     try {
@@ -455,6 +598,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
+  document.documentElement.classList.remove("theme-green");
   if (notificationTimer.value) {
     clearInterval(notificationTimer.value);
   }
@@ -562,8 +706,38 @@ const submitChangePassword = async () => {
   color: var(--foreground);
 }
 
+.sidebar-link-sub {
+  font-size: 12px !important;
+  color: color-mix(in oklab, var(--foreground) 75%, transparent) !important;
+}
+
+.sidebar-link-text {
+  font-size: 12px !important;
+  color: color-mix(in oklab, var(--foreground) 75%, transparent) !important;
+}
+
+.sidebar-link-demo {
+  color: color-mix(in oklab, var(--foreground) 45%, transparent) !important;
+}
+
+.sidebar-link-demo .sidebar-link-text {
+  color: color-mix(in oklab, var(--foreground) 45%, transparent) !important;
+}
+
+.sidebar-demo-badge {
+  margin-left: auto;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--primary) 18%, transparent);
+  padding: 1px 5px;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: color-mix(in oklab, var(--primary) 70%, var(--foreground));
+}
+
 .sidebar-link-active {
   background: var(--accent);
   color: var(--accent-foreground);
 }
 </style>
+

@@ -21,3 +21,4 @@ const forwardedProps = useForwardProps(delegatedProps)
     <slot />
   </DropdownMenuLabel>
 </template>
+

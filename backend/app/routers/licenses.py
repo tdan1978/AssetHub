@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import or_
 
 from app.core.database import get_db
-from app.core.deps import require_role, get_current_user
+from app.core.deps import require_permission
 from app.models.license import License
 from app.schemas.license import LicenseCreate, LicenseOut
 from app.schemas.common import Page
@@ -18,7 +18,7 @@ def list_licenses(
     size: int = 20,
     q: str | None = None,
     db: Session = Depends(get_db),
-    _: object = Depends(get_current_user),
+    _: object = Depends(require_permission("software_assets", "view")),
 ):
     query = db.query(License)
     if q:
@@ -29,7 +29,7 @@ def list_licenses(
 
 
 @router.get("/{license_id}", response_model=LicenseOut)
-def get_license(license_id: int, db: Session = Depends(get_db), _: object = Depends(get_current_user)):
+def get_license(license_id: int, db: Session = Depends(get_db), _: object = Depends(require_permission("software_assets", "view"))):
     item = db.query(License).filter(License.id == license_id).first()
     if not item:
         raise HTTPException(status_code=404, detail="License not found")
@@ -40,7 +40,7 @@ def get_license(license_id: int, db: Session = Depends(get_db), _: object = Depe
 def create_license(
     payload: LicenseCreate,
     db: Session = Depends(get_db),
-    _: object = Depends(require_role("super_admin", "asset_admin")),
+    _: object = Depends(require_permission("software_assets", "create")),
 ):
     item = License(**payload.model_dump())
     db.add(item)
@@ -54,7 +54,7 @@ def update_license(
     license_id: int,
     payload: LicenseCreate,
     db: Session = Depends(get_db),
-    _: object = Depends(require_role("super_admin", "asset_admin")),
+    _: object = Depends(require_permission("software_assets", "update")),
 ):
     item = db.query(License).filter(License.id == license_id).first()
     if not item:
@@ -71,7 +71,7 @@ def update_license(
 def delete_license(
     license_id: int,
     db: Session = Depends(get_db),
-    _: object = Depends(require_role("super_admin")),
+    _: object = Depends(require_permission("software_assets", "delete")),
 ):
     item = db.query(License).filter(License.id == license_id).first()
     if not item:

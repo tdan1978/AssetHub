@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
-from app.core.deps import require_role
+from app.core.deps import require_permission
 from app.models.license import License
 from app.models.software_field_value import SoftwareFieldValue
 from app.schemas.software_field_value import SoftwareFieldValueIn, SoftwareFieldValueOut
@@ -14,7 +14,7 @@ router = APIRouter(prefix="/api/v1/licenses", tags=["license-fields"])
 def list_license_fields(
     license_id: int,
     db: Session = Depends(get_db),
-    _: object = Depends(require_role("super_admin", "asset_admin")),
+    _: object = Depends(require_permission("software_assets", "view")),
 ):
     item = db.query(License).filter(License.id == license_id).first()
     if not item:
@@ -27,7 +27,7 @@ def upsert_license_fields(
     license_id: int,
     payload: list[SoftwareFieldValueIn],
     db: Session = Depends(get_db),
-    _: object = Depends(require_role("super_admin", "asset_admin")),
+    _: object = Depends(require_permission("software_assets", "update")),
 ):
     item = db.query(License).filter(License.id == license_id).first()
     if not item:

@@ -5,6 +5,7 @@ class CategoryBase(BaseModel):
     name: str
     code: str | None = None
     description: str | None = None
+    usage_scope: str | None = None
     is_active: bool = True
 
 
@@ -16,6 +17,7 @@ class CategoryUpdate(BaseModel):
     name: str | None = None
     code: str | None = None
     description: str | None = None
+    usage_scope: str | None = None
     is_active: bool | None = None
 
 

@@ -26,3 +26,4 @@ const props = defineProps<{ class?: HTMLAttributes["class"] }>()
     </svg>
   </div>
 </template>
+

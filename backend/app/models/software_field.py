@@ -18,6 +18,9 @@ class SoftwareField(Base, TimestampMixin):
     visibility_rules = Column(JSON, nullable=True)
     reminder_enabled = Column(Boolean, default=False)
     reminder_days = Column(Integer, nullable=True)
+    data_source = Column(String(50), nullable=True)
+    searchable = Column(Boolean, default=False)
+    multi_select_mode = Column(String(20), nullable=True)
     sort_order = Column(Integer, default=0)
     is_deleted = Column(Boolean, default=False)
 

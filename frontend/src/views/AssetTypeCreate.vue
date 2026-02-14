@@ -23,6 +23,19 @@
           <Input v-model="form.code" placeholder="类型编码" />
         </div>
         <div class="form-field">
+          <label class="form-label">适用范围</label>
+          <Select v-model="form.usage_scope">
+            <SelectTrigger class="w-full">
+              <SelectValue placeholder="选择范围" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">通用</SelectItem>
+              <SelectItem value="office">办公资产</SelectItem>
+              <SelectItem value="datacenter">数据中心资产</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div class="form-field">
           <label class="form-label">描述</label>
           <Input v-model="form.description" placeholder="描述" />
         </div>
@@ -40,13 +53,18 @@ import { useRouter } from "vue-router";
 import api from "../api/client";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 
 const router = useRouter();
-const form = ref({ name: "", code: "", description: "", is_active: true });
+const form = ref({ name: "", code: "", description: "", usage_scope: "office", is_active: true });
 
 const save = async () => {
   if (!form.value.name) return;
-  await api.post("/categories", form.value);
+  const payload = { ...form.value, usage_scope: form.value.usage_scope === "all" ? null : form.value.usage_scope };
+  await api.post("/categories", payload);
   router.push("/asset-types");
 };
 </script>
+
+
+

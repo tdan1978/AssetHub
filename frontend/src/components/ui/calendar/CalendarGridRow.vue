@@ -20,3 +20,4 @@ const forwardedProps = useForwardProps(delegatedProps)
     <slot />
   </CalendarGridRow>
 </template>
+

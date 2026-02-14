@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.core.database import get_db
-from app.core.deps import require_role, get_current_user
+from app.core.deps import require_permission
 from app.models.stocktake import Stocktake, StocktakeItem
 from app.models.asset import Asset
 from app.schemas.stocktake import StocktakeCreate, StocktakeOut
@@ -13,7 +13,7 @@ router = APIRouter(prefix="/api/v1/stocktakes", tags=["stocktakes"])
 
 
 @router.get("", response_model=list[StocktakeOut])
-def list_stocktakes(db: Session = Depends(get_db), _: object = Depends(get_current_user)):
+def list_stocktakes(db: Session = Depends(get_db), _: object = Depends(require_permission("stocktakes", "view"))):
     return db.query(Stocktake).order_by(Stocktake.id.desc()).all()
 
 
@@ -21,7 +21,7 @@ def list_stocktakes(db: Session = Depends(get_db), _: object = Depends(get_curre
 def create_stocktake(
     payload: StocktakeCreate,
     db: Session = Depends(get_db),
-    user=Depends(require_role("super_admin", "asset_admin")),
+    user=Depends(require_permission("stocktakes", "create")),
 ):
     task = Stocktake(name=payload.name, scope=payload.scope, created_by=user.id)
     db.add(task)
@@ -41,7 +41,7 @@ def update_stocktake(
     task_id: int,
     payload: StocktakeCreate,
     db: Session = Depends(get_db),
-    _: object = Depends(require_role("super_admin", "asset_admin")),
+    _: object = Depends(require_permission("stocktakes", "update")),
 ):
     task = db.query(Stocktake).filter(Stocktake.id == task_id).first()
     if not task:
@@ -54,7 +54,7 @@ def update_stocktake(
 
 
 @router.get("/{task_id}", response_model=StocktakeOut)
-def get_stocktake(task_id: int, db: Session = Depends(get_db), _: object = Depends(get_current_user)):
+def get_stocktake(task_id: int, db: Session = Depends(get_db), _: object = Depends(require_permission("stocktakes", "view"))):
     task = db.query(Stocktake).filter(Stocktake.id == task_id).first()
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
@@ -65,7 +65,7 @@ def get_stocktake(task_id: int, db: Session = Depends(get_db), _: object = Depen
 def delete_stocktake(
     task_id: int,
     db: Session = Depends(get_db),
-    _: object = Depends(require_role("super_admin", "asset_admin")),
+    _: object = Depends(require_permission("stocktakes", "update")),
 ):
     task = db.query(Stocktake).filter(Stocktake.id == task_id).first()
     if not task:
@@ -82,7 +82,7 @@ def scan_asset(
     status: str = "normal",
     note: str | None = None,
     db: Session = Depends(get_db),
-    _: object = Depends(get_current_user),
+    _: object = Depends(require_permission("stocktakes", "update")),
 ):
     item = db.query(StocktakeItem).filter(StocktakeItem.stocktake_id == task_id, StocktakeItem.asset_id == asset_id).first()
     if not item:
@@ -95,7 +95,7 @@ def scan_asset(
 
 
 @router.get("/{task_id}/progress")
-def stocktake_progress(task_id: int, db: Session = Depends(get_db), _: object = Depends(get_current_user)):
+def stocktake_progress(task_id: int, db: Session = Depends(get_db), _: object = Depends(require_permission("stocktakes", "view"))):
     total = db.query(StocktakeItem).filter(StocktakeItem.stocktake_id == task_id).count()
     scanned = db.query(StocktakeItem).filter(StocktakeItem.stocktake_id == task_id, StocktakeItem.scanned_at != None).count()
     return {"total": total, "scanned": scanned, "missing": total - scanned}

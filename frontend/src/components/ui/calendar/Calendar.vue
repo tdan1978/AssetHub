@@ -24,7 +24,7 @@ const placeholder = useVModel(props, "placeholder", emits, {
   defaultValue: props.defaultPlaceholder ?? today(getLocalTimeZone()),
 }) as Ref<DateValue>
 
-const formatter = useDateFormatter(props.locale ?? "en")
+const formatter = useDateFormatter(props.locale ?? "zh-CN")
 
 const yearRange = computed(() => {
   return props.yearRange ?? createYearRange({
@@ -158,3 +158,4 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
     </div>
   </CalendarRoot>
 </template>
+

@@ -37,3 +37,4 @@ const forwardedProps = useForwardProps(delegatedProps)
     <slot />
   </CalendarCellTrigger>
 </template>
+

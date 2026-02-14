@@ -1,16 +1,28 @@
 <template>
   <Popover>
     <PopoverTrigger as-child>
-      <Button variant="outline" class="w-full justify-start text-left" type="button">
-        <span v-if="modelValue">{{ modelValue }}</span>
-        <span v-else class="text-muted-foreground">{{ placeholder }}</span>
-      </Button>
+      <div class="relative w-full">
+        <Button variant="outline" :class="['w-full justify-start text-left pr-9', props.class]" type="button">
+          <span v-if="modelValue">{{ modelValue }}</span>
+          <span v-else class="text-muted-foreground">{{ placeholder }}</span>
+        </Button>
+        <button
+          v-if="modelValue"
+          type="button"
+          class="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-muted-foreground transition hover:text-foreground"
+          aria-label="清除日期"
+          @click.stop="clearValue"
+        >
+          <X class="h-4 w-4" />
+        </button>
+      </div>
     </PopoverTrigger>
     <PopoverContent class="w-auto p-0" align="start">
       <Calendar
         v-model="selectedDate"
         :layout="showMonthYearSelect ? 'month-and-year' : undefined"
         :yearRange="yearRangeValues"
+        :locale="locale"
       />
     </PopoverContent>
   </Popover>
@@ -20,12 +32,17 @@
 import { computed } from "vue";
 import { getLocalTimeZone, parseDate, today } from "@internationalized/date";
 import { createYearRange } from "reka-ui/date";
+import { X } from "lucide-vue-next";
 import { Button } from "../button";
 import { Calendar } from "../calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "../popover";
 
 const props = defineProps({
   modelValue: {
+    type: String,
+    default: ""
+  },
+  class: {
     type: String,
     default: ""
   },
@@ -40,6 +57,10 @@ const props = defineProps({
   yearRange: {
     type: Number,
     default: 10
+  },
+  locale: {
+    type: String,
+    default: "zh-CN"
   }
 });
 
@@ -61,4 +82,9 @@ const yearRangeValues = computed(() => {
     end: base.cycle("year", props.yearRange)
   });
 });
+
+const clearValue = () => {
+  emit("update:modelValue", "");
+};
 </script>
+

@@ -26,8 +26,8 @@
   --card-foreground: oklch(14.5% 0 0);
   --popover: oklch(100% 0 0);
   --popover-foreground: oklch(14.5% 0 0);
-  --primary: oklch(20.5% 0 0);
-  --primary-foreground: oklch(98.5% 0 0);
+  --primary: var(--color-lime-600);
+  --primary-foreground: var(--color-lime-50);
   --secondary: oklch(97% 0 0);
   --secondary-foreground: oklch(20.5% 0 0);
   --muted: oklch(97% 0 0);
@@ -37,7 +37,7 @@
   --destructive: oklch(57.7% 0.245 27.325);
   --border: oklch(92.2% 0 0);
   --input: oklch(92.2% 0 0);
-  --ring: oklch(70.8% 0 0);
+  --ring: var(--color-lime-400);
   --chart-1: var(--color-blue-300);
   --chart-2: var(--color-blue-500);
   --chart-3: var(--color-blue-600);
@@ -45,12 +45,12 @@
   --chart-5: var(--color-blue-800);
   --sidebar: oklch(98.5% 0 0);
   --sidebar-foreground: oklch(14.5% 0 0);
-  --sidebar-primary: oklch(20.5% 0 0);
-  --sidebar-primary-foreground: oklch(98.5% 0 0);
+  --sidebar-primary: var(--color-lime-600);
+  --sidebar-primary-foreground: var(--color-lime-50);
   --sidebar-accent: oklch(97% 0 0);
   --sidebar-accent-foreground: oklch(20.5% 0 0);
   --sidebar-border: oklch(92.2% 0 0);
-  --sidebar-ring: oklch(70.8% 0 0);
+  --sidebar-ring: var(--color-lime-400);
   --surface: oklch(98% 0 0);
   --surface-foreground: var(--foreground);
   --code: var(--surface);
@@ -68,8 +68,8 @@
   --card-foreground: oklch(98.5% 0 0);
   --popover: oklch(26.9% 0 0);
   --popover-foreground: oklch(98.5% 0 0);
-  --primary: oklch(92.2% 0 0);
-  --primary-foreground: oklch(20.5% 0 0);
+  --primary: var(--color-lime-500);
+  --primary-foreground: var(--color-lime-50);
   --secondary: oklch(26.9% 0 0);
   --secondary-foreground: oklch(98.5% 0 0);
   --muted: oklch(26.9% 0 0);
@@ -79,7 +79,7 @@
   --destructive: oklch(70.4% 0.191 22.216);
   --border: oklch(100% 0 0 / 10%);
   --input: oklch(100% 0 0 / 15%);
-  --ring: oklch(55.6% 0 0);
+  --ring: var(--color-lime-900);
   --chart-1: var(--color-blue-300);
   --chart-2: var(--color-blue-500);
   --chart-3: var(--color-blue-600);
@@ -103,25 +103,38 @@
   --selection-foreground: oklch(20.5% 0 0);
 }
 
-.theme-green .theme-container,
-.theme-green [data-reka-popper-content-wrapper] {
+.theme-green {
   --primary: var(--color-lime-600);
   --primary-foreground: var(--color-lime-50);
+  --secondary: color-mix(in oklab, var(--color-lime-50) 88%, white);
+  --secondary-foreground: var(--color-lime-900);
   --ring: var(--color-lime-400);
-  --chart-1: var(--color-green-300);
-  --chart-2: var(--color-green-500);
-  --chart-3: var(--color-green-600);
-  --chart-4: var(--color-green-700);
-  --chart-5: var(--color-green-800);
+  --chart-1: #ecfccb;
+  --chart-2: #a3e635;
+  --chart-3: #65a30d;
+  --chart-4: #4d7c0f;
+  --chart-5: #365314;
   --sidebar-primary: var(--color-lime-600);
   --sidebar-primary-foreground: var(--color-lime-50);
   --sidebar-ring: var(--color-lime-400);
+  --vis-donut-central-label-font-size: 1.8rem;
+  --vis-donut-central-sub-label-font-size: 11px;
+  --vis-donut-central-label-text-color: var(--foreground);
+  --vis-donut-central-sub-label-text-color: var(--muted-foreground);
+  --vis-donut-central-label-font-family: "Geist", "Geist Fallback: BlinkMacSystemFont", "Geist Fallback: Segoe UI", "Geist Fallback: Helvetica Neue", "Geist Fallback: Arial", "Geist Fallback: Noto Sans", Arial, ui-sans-serif, system-ui, sans-serif;
+  --vis-donut-central-label-offset-y: 4px;
 }
 
-.dark .theme-green .theme-container,
-.dark .theme-green [data-reka-popper-content-wrapper] {
+.theme-green .unovis-donut-component .central-label,
+.theme-green .unovis-donut-component .central-sub-label {
+  transform: translateY(15px);
+}
+
+.dark .theme-green {
   --primary: var(--color-lime-600);
   --primary-foreground: var(--color-lime-50);
+  --secondary: color-mix(in oklab, var(--color-lime-900) 72%, black);
+  --secondary-foreground: var(--color-lime-50);
   --ring: var(--color-lime-900);
   --sidebar-primary: var(--color-lime-500);
   --sidebar-primary-foreground: var(--color-lime-50);
@@ -135,6 +148,28 @@
 body {
   @apply bg-background text-foreground;
   font-family: "Geist", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+}
+
+@layer base {
+  :root {
+    --vis-tooltip-background-color: transparent;
+    --vis-tooltip-border-color: transparent;
+    --vis-tooltip-text-color: inherit;
+    --vis-tooltip-shadow-color: transparent;
+    --vis-tooltip-backdrop-filter: none;
+    --vis-tooltip-padding: 0px;
+    --vis-tooltip-border-radius: 0px;
+    --vis-tooltip-box-shadow: none;
+    --vis-primary-color: var(--chart-3);
+    --vis-secondary-color: var(--chart-2);
+    --vis-text-color: var(--muted-foreground);
+    --vis-donut-central-label-font-size: 1.8rem;
+    --vis-donut-central-sub-label-font-size: 14px;
+    --vis-donut-central-label-text-color: var(--foreground);
+    --vis-donut-central-sub-label-text-color: var(--muted-foreground);
+    --vis-donut-central-label-font-family: "Geist", "Geist Fallback: BlinkMacSystemFont", "Geist Fallback: Segoe UI", "Geist Fallback: Helvetica Neue", "Geist Fallback: Arial", "Geist Fallback: Noto Sans", Arial, ui-sans-serif, system-ui, sans-serif;
+    --vis-font-family: "Geist", "Geist Fallback: BlinkMacSystemFont", "Geist Fallback: Segoe UI", "Geist Fallback: Helvetica Neue", "Geist Fallback: Arial", "Geist Fallback: Noto Sans", Arial, ui-sans-serif, system-ui, sans-serif;
+  }
 }
 
 @layer components {
@@ -185,8 +220,130 @@ body {
     @apply grid gap-4 md:grid-cols-4;
   }
 
+  /* Vertical separators for multi-column forms with top/bottom breathing space */
+  .form-grid-divider-md-4 {
+    @apply relative;
+    --form-divider-gap: 3rem;
+  }
+
+  @media (min-width: 768px) {
+    .form-grid-divider-md-4 {
+      column-gap: var(--form-divider-gap);
+    }
+
+    .form-grid-divider-md-4 > .form-field {
+      padding-left: 1.375rem;
+      padding-right: 1.375rem;
+    }
+
+    .form-grid-divider-md-4::after {
+      content: "";
+      position: absolute;
+      top: 1.75rem;
+      bottom: 1.75rem;
+      left: 0;
+      right: 0;
+      background-image:
+        linear-gradient(
+          to right,
+          transparent calc((25% - (var(--form-divider-gap) / 4)) - 0.25px),
+          color-mix(in oklab, var(--border) 85%, transparent) calc((25% - (var(--form-divider-gap) / 4)) - 0.25px),
+          color-mix(in oklab, var(--border) 85%, transparent) calc((25% - (var(--form-divider-gap) / 4)) + 0.25px),
+          transparent calc((25% - (var(--form-divider-gap) / 4)) + 0.25px)
+        ),
+        linear-gradient(
+          to right,
+          transparent calc(50% - 0.25px),
+          color-mix(in oklab, var(--border) 85%, transparent) calc(50% - 0.25px),
+          color-mix(in oklab, var(--border) 85%, transparent) calc(50% + 0.25px),
+          transparent calc(50% + 0.25px)
+        ),
+        linear-gradient(
+          to right,
+          transparent calc((75% + (var(--form-divider-gap) / 4)) - 0.25px),
+          color-mix(in oklab, var(--border) 85%, transparent) calc((75% + (var(--form-divider-gap) / 4)) - 0.25px),
+          color-mix(in oklab, var(--border) 85%, transparent) calc((75% + (var(--form-divider-gap) / 4)) + 0.25px),
+          transparent calc((75% + (var(--form-divider-gap) / 4)) + 0.25px)
+        );
+      pointer-events: none;
+    }
+  }
+
+  .form-grid-divider-md-2-xl-3 {
+    @apply relative;
+    --form-divider-gap-md: 3rem;
+    --form-divider-gap-xl: 3rem;
+  }
+
+  @media (min-width: 768px) {
+    .form-grid-divider-md-2-xl-3 {
+      column-gap: var(--form-divider-gap-md);
+    }
+
+    .form-grid-divider-md-2-xl-3 > .form-field {
+      position: relative;
+      z-index: 1;
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
+    }
+
+    .form-grid-divider-md-2-xl-3::after {
+      content: "";
+      position: absolute;
+      top: 1.75rem;
+      bottom: 1.75rem;
+      left: 50%;
+      width: 0.5px;
+      transform: translateX(-0.25px);
+      background: color-mix(in oklab, var(--border) 85%, transparent);
+      z-index: 0;
+      pointer-events: none;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .form-grid-divider-md-2-xl-3 {
+      column-gap: var(--form-divider-gap-xl);
+    }
+
+    .form-grid-divider-md-2-xl-3 > .form-field {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+
+    .form-grid-divider-md-2-xl-3::before,
+    .form-grid-divider-md-2-xl-3::after {
+      content: "";
+      position: absolute;
+      top: 1.75rem;
+      bottom: 1.75rem;
+      width: 0.5px;
+      transform: translateX(-0.25px);
+      background: color-mix(in oklab, var(--border) 85%, transparent);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .form-grid-divider-md-2-xl-3::before {
+      left: calc(33.3333% - (var(--form-divider-gap-xl) / 6));
+    }
+
+    .form-grid-divider-md-2-xl-3::after {
+      left: calc(66.6667% + (var(--form-divider-gap-xl) / 6));
+    }
+  }
+
   .form-field {
     @apply space-y-2;
+  }
+
+  @media (min-width: 768px) {
+    .form-grid-divider-md-2-xl-3 > .form-field-span-all {
+      position: relative;
+      z-index: 1;
+      background: var(--card);
+      border-radius: 0.5rem;
+    }
   }
 
   .form-label {

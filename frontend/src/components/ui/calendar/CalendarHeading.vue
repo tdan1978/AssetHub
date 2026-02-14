@@ -28,3 +28,4 @@ const forwardedProps = useForwardProps(delegatedProps)
     </slot>
   </CalendarHeading>
 </template>
+

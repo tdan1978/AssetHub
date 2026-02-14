@@ -13,3 +13,4 @@ const props = defineProps<CalendarGridBodyProps>()
     <slot />
   </CalendarGridBody>
 </template>
+

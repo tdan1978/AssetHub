@@ -16,6 +16,8 @@ class Message(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
+    username: str | None = None
+    full_name: str | None = None
 
 
 class UserToken(BaseModel):

@@ -16,3 +16,4 @@ const props = defineProps<{
     <slot />
   </AvatarRoot>
 </template>
+

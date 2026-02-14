@@ -14,3 +14,4 @@ const props = defineProps<CalendarGridHeadProps & { class?: HTMLAttributes["clas
     <slot />
   </CalendarGridHead>
 </template>
+

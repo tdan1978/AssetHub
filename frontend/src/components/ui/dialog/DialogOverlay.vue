@@ -19,3 +19,4 @@ const delegatedProps = reactiveOmit(props, "class")
     <slot />
   </DialogOverlay>
 </template>
+

@@ -15,3 +15,4 @@ const delegatedProps = reactiveOmit(props, "class")
     <slot />
   </DrawerDescription>
 </template>
+

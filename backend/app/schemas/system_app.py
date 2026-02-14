@@ -15,6 +15,7 @@ class SystemAppBase(BaseModel):
     biz_owner: str | None = None
     tech_owner: str | None = None
     ops_owner: str | None = None
+    ops_owner_b: str | None = None
     sec_level: str | None = None
 
 
@@ -36,11 +37,14 @@ class SystemAppUpdate(BaseModel):
     biz_owner: str | None = None
     tech_owner: str | None = None
     ops_owner: str | None = None
+    ops_owner_b: str | None = None
     sec_level: str | None = None
 
 
 class SystemAppOut(SystemAppBase):
     id: int
+    ops_owner_name: str | None = None
+    ops_owner_b_name: str | None = None
 
     class Config:
         from_attributes = True

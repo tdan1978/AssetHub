@@ -18,3 +18,4 @@ const props = defineProps<{ class?: HTMLAttributes["class"] }>()
     <slot />
   </button>
 </template>
+

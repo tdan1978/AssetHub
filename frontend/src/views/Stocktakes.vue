@@ -28,7 +28,7 @@
                 <RouterLink :to="`/stocktakes/${item.id}/edit`">
                   <Button size="sm" variant="outline">编辑</Button>
                 </RouterLink>
-                <Button size="sm" variant="outline" @click="askDelete(item.id)">删除</Button>
+                <Button size="sm" variant="destructive" @click="askDelete(item.id)">删除</Button>
               </div>
             </td>
           </tr>
@@ -91,3 +91,6 @@ onMounted(load);
 </script>
 
 <style scoped></style>
+
+
+

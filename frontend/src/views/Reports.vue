@@ -5,7 +5,7 @@
       <p class="mt-1 text-sm text-muted-foreground">资产价值、折旧统计与合同附件导出。</p>
       <div class="mt-4 flex flex-wrap gap-3">
         <Button>导出资产清单</Button>
-        <Button variant="outline">导出折旧报表</Button>
+        <Button variant="secondary">导出折旧报表</Button>
         <Button variant="outline">导出审计报表</Button>
       </div>
     </div>
@@ -42,7 +42,7 @@
             <td>¥ 120,000</td>
             <td>数据中心</td>
             <td>
-              <Button size="sm" variant="outline">查看</Button>
+              <Button size="sm" variant="secondary">查看</Button>
             </td>
           </tr>
         </tbody>
@@ -56,3 +56,6 @@ import { Button } from "../components/ui/button";
 </script>
 
 <style scoped></style>
+
+
+

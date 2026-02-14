@@ -2,7 +2,7 @@
   <div class="space-y-6">
     <div class="card">
       <h2 class="text-base font-semibold">资产流转操作</h2>
-      <p class="mt-1 text-sm text-muted-foreground">领用、退库、调拨需符合资产状态流转规则。</p>
+      <p class="mt-1 text-sm text-muted-foreground">领用、退库需符合资产状态流转规则。</p>
     </div>
 
     <div class="grid gap-4 md:grid-cols-3">
@@ -16,10 +16,6 @@
           <div class="form-field">
             <label class="form-label">领用人 ID</label>
             <Input v-model="checkout.user_id" placeholder="领用人 ID" />
-          </div>
-          <div class="form-field">
-          <label class="form-label">用途</label>
-          <Input v-model="checkout.dept" placeholder="用途" />
           </div>
           <Button @click="submitCheckout">提交领用</Button>
         </div>
@@ -48,20 +44,6 @@
         </div>
       </div>
 
-      <div class="card">
-        <h3 class="text-sm font-semibold">调拨</h3>
-        <div class="mt-3 grid gap-3">
-          <div class="form-field">
-            <label class="form-label">资产 ID / SN</label>
-            <Input v-model="transfer.asset" placeholder="资产 ID / SN" />
-          </div>
-          <div class="form-field">
-          <label class="form-label">目标用途</label>
-          <Input v-model="transfer.dept" placeholder="目标用途" />
-          </div>
-          <Button @click="submitTransfer">提交调拨</Button>
-        </div>
-      </div>
     </div>
 
     <div class="card">
@@ -79,9 +61,8 @@ import { ref } from "vue";
 import api from "../api/client";
 
 const message = ref("");
-const checkout = ref({ asset: "", user_id: "", dept: "" });
+const checkout = ref({ asset: "", user_id: "" });
 const checkin = ref({ asset: "", damaged: "false" });
-const transfer = ref({ asset: "", dept: "" });
 
 const resolveAssetId = async (input) => {
   const value = String(input || "").trim();
@@ -100,7 +81,7 @@ const submitCheckout = async () => {
       return;
     }
     await api.post(`/assets/${assetId}/checkout`, null, {
-      params: { user_id: checkout.value.user_id, dept: checkout.value.dept }
+      params: { user_id: checkout.value.user_id }
     });
     message.value = "领用成功";
   } catch (err) {
@@ -125,22 +106,9 @@ const submitCheckin = async () => {
   }
 };
 
-const submitTransfer = async () => {
-  message.value = "";
-  try {
-    const assetId = await resolveAssetId(transfer.value.asset);
-    if (!assetId) {
-      message.value = "找不到资产，请确认输入。";
-      return;
-    }
-    await api.post(`/assets/${assetId}/transfer`, null, {
-      params: { dept: transfer.value.dept }
-    });
-    message.value = "调拨成功";
-  } catch (err) {
-    message.value = "调拨失败，请检查参数。";
-  }
-};
 </script>
 
 <style scoped></style>
+
+
+

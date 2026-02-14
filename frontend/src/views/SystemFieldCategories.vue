@@ -32,12 +32,12 @@
             <td class="px-4 py-2">
               <div class="flex gap-2">
                 <RouterLink :to="`/system-field-categories/${item.id}/fields`">
-                  <Button size="sm" variant="outline">字段</Button>
+                  <Button size="sm" variant="default">字段</Button>
                 </RouterLink>
                 <RouterLink :to="`/system-field-categories/${item.id}/edit`">
                   <Button size="sm" variant="outline">编辑</Button>
                 </RouterLink>
-                <Button size="sm" variant="outline" @click="askDelete(item.id)">删除</Button>
+                <Button size="sm" variant="destructive" @click="askDelete(item.id)">删除</Button>
               </div>
             </td>
           </tr>
@@ -99,3 +99,6 @@ const confirmDelete = async () => {
 
 onMounted(load);
 </script>
+
+
+

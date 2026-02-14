@@ -19,3 +19,4 @@ const delegatedProps = reactiveOmit(props, "class")
     <slot />
   </AvatarFallback>
 </template>
+

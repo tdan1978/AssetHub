@@ -11,7 +11,6 @@ class AssetBase(BaseModel):
     category_id: int | None = None
     status: int = 0
     user_id: int | None = None
-    dept: str | None = None
     price: Decimal | None = None
     purchase_at: date | None = None
     warranty_at: date | None = None
@@ -28,7 +27,6 @@ class AssetUpdate(BaseModel):
     category_id: int | None = None
     status: int | None = None
     user_id: int | None = None
-    dept: str | None = None
     price: Decimal | None = None
     purchase_at: date | None = None
     warranty_at: date | None = None

@@ -53,7 +53,7 @@ import { ref } from "vue";
 const message = ref("");
 
 const downloadTemplate = () => {
-  const headers = ["sn", "asset_no", "name", "category", "purchase_at", "price", "warranty_at", "dept", "location", "attachment"];
+  const headers = ["sn", "asset_no", "name", "category", "purchase_at", "price", "warranty_at", "location", "attachment"];
   const csv = `${headers.join(",")}\n`;
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
   const url = URL.createObjectURL(blob);
@@ -95,3 +95,6 @@ const onFileChange = async (event) => {
 </script>
 
 <style scoped></style>
+
+
+
